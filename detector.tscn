@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://007c1kt0uxr1"]
+
+[ext_resource type="Script" path="res://detector.gd" id="1_chily"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_408ux"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qo3qr"]
+albedo_color = Color(1, 0, 0.148706, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_utcb4"]
+material = SubResource("StandardMaterial3D_qo3qr")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Detector" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.817939, -1.0796)
+script = ExtResource("1_chily")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_408ux")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13244, 0)
+mesh = SubResource("BoxMesh_utcb4")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
