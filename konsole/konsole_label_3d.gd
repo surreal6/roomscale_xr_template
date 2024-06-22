@@ -26,9 +26,11 @@ func _process(delta: float) -> void:
 		outline_modulate = Color(0,0,0,value)
 	if fixed:
 		position.z -= delta * 0.1
+		modulate = Color(0, 0, 0, 1)
+		outline_size = 0
 
-func _on_timer_timeout() -> void:
-	print("autodestroy")
+func _on_timer_timeout(args) -> void:
+	print("autodestroy %s"% args)
 	autodestroy_label.emit()
 	await get_tree().create_timer(1).timeout
 	queue_free()

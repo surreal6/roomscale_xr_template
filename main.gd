@@ -22,10 +22,8 @@ func _ready():
 			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
 		else:
 			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE)
-			
-		play_area = xr_interface.get_play_area()
-		print(play_area)
-		build_mesh(play_area)
+		
+		get_play_area()
 		
 		print_to_konsole("name: %s" % xr_interface.get_name())
 		print_to_konsole("system info: %s" % xr_interface.get_system_info())
@@ -33,17 +31,32 @@ func _ready():
 		print_to_konsole("tracking status: %s" % xr_interface.get_tracking_status())	
 		print_to_konsole("ar is anchor detection enabled: %s" % xr_interface.ar_is_anchor_detection_enabled)
 		
+		print_to_konsole("oh, lala", false, 10)
+		
 		#xr_interface.trigger_haptic_pulse($XROrigin3D/LeftHand,)
+		
+		# Connect the OpenXR events
+		xr_interface.connect("play_area_changed", _on_play_area_changed)
 	else:
 		print("OpenXR not initialized, please check if your headset is connected")
 	
 	konsole.connect("konsole_ready", on_konsole_ready)
 	konsole.connect("add_klabel", on_add_klabel)
 
+func get_play_area():
+	await get_tree().create_timer(1).timeout
+	play_area = xr_interface.get_play_area()
+	build_mesh(play_area)
+
+func _on_play_area_changed(args):
+	print_to_konsole("area changed")
+	print_to_konsole(args)
+	get_play_area()
+
 func on_add_klabel(msg, fixed, delay):
 	print_to_konsole(msg, fixed, delay)
 
-func on_konsole_ready(msg):
+func on_konsole_ready(_msg):
 	print_to_konsole("konsole_ready", true, 30)
 
 func switch_to_ar() -> bool:
@@ -80,6 +93,8 @@ func switch_to_vr() -> bool:
 	return true
 
 func build_mesh(points):
+	for node in get_tree().get_nodes_in_group("play_area_mesh"):
+		node.queue_free()
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_LINE_STRIP)
 	for point in points:
@@ -87,6 +102,7 @@ func build_mesh(points):
 		st.add_vertex(point)
 	var mesh = st.commit()
 	var m = MeshInstance3D.new()
+	m.add_to_group("play_area_mesh")
 	m.mesh = mesh
 	self.add_child(m)
 	print_to_konsole("build_mesh")
