@@ -22,7 +22,7 @@ func _update_on():
 func _ready():
 	_update_on()
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	print("body entered")
 	if can_toggle:
 		on = not on
