@@ -2,23 +2,49 @@ extends Node3D
 
 var xr_interface : XRInterface
 
+var play_area
+
 @onready var environment : Environment = $WorldEnvironment.environment
+@onready var konsole : konsole = $XROrigin3D/konsole
 
 func _ready():
 	xr_interface = XRServer.find_interface("OpenXR")
 	if xr_interface and xr_interface.is_initialized():
-		print("OpenXR initialised succesfully")
-		
+		print_to_konsole("OpenXR initialised succesfully")
 		#Turn off v-sync!
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-		
 		#Change our main viewport to output to the HMD
 		get_viewport().use_xr = true
-		
 		#set our default value for our AR toggle
 		$ARToggle.on = xr_interface.environment_blend_mode != XRInterface.XR_ENV_BLEND_MODE_OPAQUE
+		
+		if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
+			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
+		else:
+			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE)
+			
+		play_area = xr_interface.get_play_area()
+		print(play_area)
+		build_mesh(play_area)
+		
+		print_to_konsole("name: %s" % xr_interface.get_name())
+		print_to_konsole("system info: %s" % xr_interface.get_system_info())
+		print_to_konsole("capabilities: %s" % xr_interface.get_capabilities())
+		print_to_konsole("tracking status: %s" % xr_interface.get_tracking_status())	
+		print_to_konsole("ar is anchor detection enabled: %s" % xr_interface.ar_is_anchor_detection_enabled)
+		
+		#xr_interface.trigger_haptic_pulse($XROrigin3D/LeftHand,)
 	else:
 		print("OpenXR not initialized, please check if your headset is connected")
+	
+	konsole.connect("konsole_ready", on_konsole_ready)
+	konsole.connect("add_klabel", on_add_klabel)
+
+func on_add_klabel(msg, fixed, delay):
+	print_to_konsole(msg, fixed, delay)
+
+func on_konsole_ready(msg):
+	print_to_konsole("konsole_ready", true, 30)
 
 func switch_to_ar() -> bool:
 	if xr_interface:
@@ -53,11 +79,27 @@ func switch_to_vr() -> bool:
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_BG
 	return true
 
+func build_mesh(points):
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	for point in points:
+		print_to_konsole("point %s" % point)
+		st.add_vertex(point)
+	var mesh = st.commit()
+	var m = MeshInstance3D.new()
+	m.mesh = mesh
+	self.add_child(m)
+	print_to_konsole("build_mesh")
 
 func _on_detector_toggled(is_on):
+	print_to_konsole("toggle_passthrough", false, 10)
 	if is_on:
 		if !switch_to_ar():
 			$ARToggle.on = false
 	else:
 		if !switch_to_vr():
 			$ARToggle.on = true
+
+func print_to_konsole(msg, fixed = true, delay = 5):
+	print("ptk: " , msg)
+	konsole.add_label(msg, fixed, delay)

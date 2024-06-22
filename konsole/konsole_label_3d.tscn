@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://csp5v4fnu10mr"]
+
+[ext_resource type="Script" path="res://konsole/konsole_label_3d.gd" id="1_h6jhu"]
+
+[node name="konsole_label_3d" type="Label3D"]
+billboard = 2
+double_sided = false
+no_depth_test = true
+text = "Hola"
+font_size = 16
+outline_size = 3
+script = ExtResource("1_h6jhu")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

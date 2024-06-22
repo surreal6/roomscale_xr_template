@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bcuvadar57iaq"]
+[gd_scene load_steps=13 format=3 uid="uid://bcuvadar57iaq"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_3dsxj"]
 [ext_resource type="PackedScene" uid="uid://007c1kt0uxr1" path="res://detector.tscn" id="2_jfjvw"]
+[ext_resource type="PackedScene" uid="uid://csp5v4fnu10mr" path="res://konsole/konsole_label_3d.tscn" id="2_rrxp2"]
+[ext_resource type="Script" path="res://konsole.gd" id="2_xgyj3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bbe0h"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -28,6 +30,8 @@ radius = 0.1
 [sub_resource type="BoxMesh" id="BoxMesh_x76ei"]
 size = Vector3(1, 0.1, 0.5)
 
+[sub_resource type="ArrayMesh" id="ArrayMesh_7rhxq"]
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_3dsxj")
 
@@ -42,6 +46,12 @@ shadow_enabled = true
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="look_at" type="Node3D" parent="XROrigin3D/XRCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.63034)
+
+[node name="klabel_sample_fixed" parent="XROrigin3D/XRCamera3D/look_at" instance=ExtResource("2_rrxp2")]
+msg = "sample fixed"
 
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
@@ -64,11 +74,24 @@ sync_to_physics = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightHand/AnimatableBody3D"]
 shape = SubResource("SphereShape3D_6k6sc")
 
+[node name="konsole" type="Node3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -2.63034)
+script = ExtResource("2_xgyj3")
+
+[node name="konsole_float" type="Node3D" parent="XROrigin3D/konsole"]
+
+[node name="klabel_sample_float" parent="XROrigin3D/konsole/konsole_float" instance=ExtResource("2_rrxp2")]
+fixed = false
+msg = "sample float"
+
 [node name="Table" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776093, -0.420636)
 mesh = SubResource("BoxMesh_x76ei")
 
 [node name="ARToggle" parent="." instance=ExtResource("2_jfjvw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776093, -0.420631)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+off_color = Color(0.20868, 2.00043e-07, 2.40654e-08, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_7rhxq")
 
 [connection signal="toggled" from="ARToggle" to="." method="_on_detector_toggled"]
