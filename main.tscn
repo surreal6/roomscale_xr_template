@@ -28,7 +28,7 @@ size = Vector3(0.1, 0.1, 0.1)
 radius = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_x76ei"]
-size = Vector3(1, 0.1, 0.5)
+size = Vector3(1, 0.1, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_7rhxq"]
 
@@ -85,6 +85,7 @@ fixed = false
 msg = "sample float"
 
 [node name="Table" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("BoxMesh_x76ei")
 
 [node name="ARToggle" parent="." instance=ExtResource("2_jfjvw")]
