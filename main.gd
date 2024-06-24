@@ -18,12 +18,20 @@ func _ready():
 		#set our default value for our AR toggle
 		$ARToggle.on = xr_interface.environment_blend_mode != XRInterface.XR_ENV_BLEND_MODE_OPAQUE
 		
+		print_to_konsole("support STAGE: %s" % xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE))
+		print_to_konsole("support ROOMSCALE: %s" % xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE))
+		
 		if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
 			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
 		else:
 			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE)
 		
+		xr_interface.xr_play_area_mode = XRInterface.XR_PLAY_AREA_STAGE
+		
+		print_to_konsole("play area mode: %s" % xr_interface.xr_play_area_mode)
+		
 		get_play_area()
+		
 		
 		print_to_konsole("name: %s" % xr_interface.get_name())
 		print_to_konsole("system info: %s" % xr_interface.get_system_info())
@@ -32,6 +40,7 @@ func _ready():
 		print_to_konsole("ar is anchor detection enabled: %s" % xr_interface.ar_is_anchor_detection_enabled)
 		
 		print_to_konsole("oh, lala", false, 10)
+
 		
 		#xr_interface.trigger_haptic_pulse($XROrigin3D/LeftHand,)
 		
@@ -96,15 +105,19 @@ func build_mesh(points):
 	for node in get_tree().get_nodes_in_group("play_area_mesh"):
 		node.queue_free()
 	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	var labels = []
+	st.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 	for point in points:
-		print_to_konsole("point %s" % point)
 		st.add_vertex(point)
+		labels.append(print_to_space(point))
+	st.add_vertex(points[0])
 	var mesh = st.commit()
 	var m = MeshInstance3D.new()
 	m.add_to_group("play_area_mesh")
 	m.mesh = mesh
 	self.add_child(m)
+	for label in labels:
+		m.add_child(label)
 	print_to_konsole("build_mesh")
 
 func _on_detector_toggled(is_on):
@@ -119,3 +132,13 @@ func _on_detector_toggled(is_on):
 func print_to_konsole(msg, fixed = true, delay = 5):
 	print("ptk: " , msg)
 	konsole.add_label(msg, fixed, delay)
+
+func print_to_space(position):
+	var label = Label3D.new()
+	label.text = "%s" % position
+	label.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+	label.no_depth_test = true
+	label.font_size = 8
+	label.outline_size = 0
+	label.global_position = position
+	return label
