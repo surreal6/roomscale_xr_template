@@ -22,11 +22,11 @@ func _ready():
 		print_to_konsole("support ROOMSCALE: %s" % xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE))
 		
 		if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
-			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
+			#xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
+			xr_interface.xr_play_area_mode = XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE
 		else:
-			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE)
-		
-		xr_interface.xr_play_area_mode = XRInterface.XR_PLAY_AREA_STAGE
+			#xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE)
+			xr_interface.xr_play_area_mode = XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE
 		
 		print_to_konsole("play area mode: %s" % xr_interface.xr_play_area_mode)
 		
@@ -45,22 +45,43 @@ func _ready():
 		#xr_interface.trigger_haptic_pulse($XROrigin3D/LeftHand,)
 		
 		# Connect the OpenXR events
+		xr_interface.connect("session_begun", _on_openxr_session_begun)
+		xr_interface.connect("session_visible", _on_openxr_visible_state)
+		xr_interface.connect("session_focussed", _on_openxr_focused_state)
+
+		# not working
 		xr_interface.connect("play_area_changed", _on_play_area_changed)
+		
+		XRServer.connect("reference_frame_changed", _on_reference_frame_changed)
+		
 	else:
 		print("OpenXR not initialized, please check if your headset is connected")
 	
 	konsole.connect("konsole_ready", on_konsole_ready)
 	konsole.connect("add_klabel", on_add_klabel)
 
+func _on_reference_frame_changed():
+	print_to_konsole("XRServer: reference_frame_changed")
+	get_play_area()
+
+func _on_openxr_session_begun():
+	print_to_konsole("XRInterface: openxr_session_begun")
+
+func _on_openxr_visible_state():
+	print_to_konsole("XRInterface: openxr_visible_state")
+
+func _on_openxr_focused_state():
+	print_to_konsole("XRInterface: openxr_focused_state")
+	get_play_area()
+
+func _on_play_area_changed(args):
+	print_to_konsole("XRInterface: area changed")
+	get_play_area()
+
 func get_play_area():
 	await get_tree().create_timer(1).timeout
 	play_area = xr_interface.get_play_area()
 	build_mesh(play_area)
-
-func _on_play_area_changed(args):
-	print_to_konsole("area changed")
-	print_to_konsole(args)
-	get_play_area()
 
 func on_add_klabel(msg, fixed, delay):
 	print_to_konsole(msg, fixed, delay)
