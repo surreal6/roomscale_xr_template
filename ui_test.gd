@@ -1,0 +1,12 @@
+extends Control
+
+@onready var testNode = $Node2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	$ObjectInspector.set_object(testNode)
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass

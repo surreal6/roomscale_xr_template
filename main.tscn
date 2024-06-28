@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bcuvadar57iaq"]
+[gd_scene load_steps=16 format=3 uid="uid://bcuvadar57iaq"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_3dsxj"]
 [ext_resource type="PackedScene" uid="uid://007c1kt0uxr1" path="res://detector.tscn" id="2_jfjvw"]
 [ext_resource type="PackedScene" uid="uid://csp5v4fnu10mr" path="res://konsole/konsole_label_3d.tscn" id="2_rrxp2"]
 [ext_resource type="Script" path="res://konsole.gd" id="2_xgyj3"]
+[ext_resource type="Script" path="res://open_xr_composition_layer_quad.gd" id="4_guicu"]
+[ext_resource type="PackedScene" uid="uid://cc7umo6odus5w" path="res://UI_test.tscn" id="5_cnmei"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bbe0h"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -26,6 +28,12 @@ size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6k6sc"]
 radius = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_dxhhw"]
+radius = 0.01
+height = 0.02
+radial_segments = 16
+rings = 8
 
 [sub_resource type="BoxMesh" id="BoxMesh_x76ei"]
 size = Vector3(1, 0.1, 1)
@@ -84,6 +92,18 @@ script = ExtResource("2_xgyj3")
 fixed = false
 msg = "sample float"
 
+[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="XROrigin3D" node_paths=PackedStringArray("layer_viewport", "controller")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.5, 1.8, 0)
+layer_viewport = NodePath("../../SubViewport")
+sort_order = -100
+alpha_blend = true
+enable_hole_punch = true
+script = ExtResource("4_guicu")
+controller = NodePath("../LeftHand")
+
+[node name="Pointer" type="MeshInstance3D" parent="XROrigin3D/OpenXRCompositionLayerQuad"]
+mesh = SubResource("SphereMesh_dxhhw")
+
 [node name="Table" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("BoxMesh_x76ei")
@@ -94,5 +114,10 @@ off_color = Color(0.20868, 2.00043e-07, 2.40654e-08, 1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_7rhxq")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+render_target_update_mode = 4
+
+[node name="UITest" parent="SubViewport" instance=ExtResource("5_cnmei")]
 
 [connection signal="toggled" from="ARToggle" to="." method="_on_detector_toggled"]
