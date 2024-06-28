@@ -46,8 +46,10 @@ func _ready():
 		
 		# Connect the OpenXR events
 		xr_interface.connect("session_begun", _on_openxr_session_begun)
-		xr_interface.connect("session_visible", _on_openxr_visible_state)
-		xr_interface.connect("session_focussed", _on_openxr_focused_state)
+		xr_interface.connect("session_visible", _on_openxr_session_visible)
+		xr_interface.connect("session_focussed", _on_openxr_session_focussed)
+		xr_interface.connect("session_loss_pending", _on_openxr_session_loss_pending)
+		
 
 		# not working
 		xr_interface.connect("play_area_changed", _on_play_area_changed)
@@ -67,12 +69,15 @@ func _on_reference_frame_changed():
 func _on_openxr_session_begun():
 	print_to_konsole("XRInterface: openxr_session_begun")
 
-func _on_openxr_visible_state():
-	print_to_konsole("XRInterface: openxr_visible_state")
+func _on_openxr_session_visible():
+	print_to_konsole("XRInterface: openxr_session_visible")
 
-func _on_openxr_focused_state():
-	print_to_konsole("XRInterface: openxr_focused_state")
+func _on_openxr_session_focussed():
+	print_to_konsole("XRInterface: openxr_session_focussed")
 	get_play_area()
+
+func _on_openxr_session_loss_pending():
+	print_to_konsole("XRInterface: openxr_session_loss_pending")
 
 func _on_play_area_changed(args):
 	print_to_konsole("XRInterface: area changed")
@@ -123,23 +128,24 @@ func switch_to_vr() -> bool:
 	return true
 
 func build_mesh(points):
-	for node in get_tree().get_nodes_in_group("play_area_mesh"):
-		node.queue_free()
-	var st = SurfaceTool.new()
-	var labels = []
-	st.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
-	for point in points:
-		st.add_vertex(point)
-		labels.append(print_to_space(point))
-	st.add_vertex(points[0])
-	var mesh = st.commit()
-	var m = MeshInstance3D.new()
-	m.add_to_group("play_area_mesh")
-	m.mesh = mesh
-	self.add_child(m)
-	for label in labels:
-		m.add_child(label)
-	print_to_konsole("build_mesh")
+	if points.size() > 0:
+		for node in get_tree().get_nodes_in_group("play_area_mesh"):
+			node.queue_free()
+		var st = SurfaceTool.new()
+		var labels = []
+		st.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
+		for point in points:
+			st.add_vertex(point)
+			labels.append(print_to_space(point))
+		st.add_vertex(points[0])
+		var mesh = st.commit()
+		var m = MeshInstance3D.new()
+		m.add_to_group("play_area_mesh")
+		m.mesh = mesh
+		self.add_child(m)
+		for label in labels:
+			m.add_child(label)
+		print_to_konsole("build_mesh")
 
 func _on_detector_toggled(is_on):
 	print_to_konsole("toggle_passthrough", false, 10)
@@ -161,5 +167,5 @@ func print_to_space(position):
 	label.no_depth_test = true
 	label.font_size = 8
 	label.outline_size = 0
-	label.global_position = position
+	label.position = position
 	return label

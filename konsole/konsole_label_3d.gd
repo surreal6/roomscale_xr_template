@@ -29,8 +29,5 @@ func _process(delta: float) -> void:
 		modulate = Color(0, 0, 0, 1)
 		outline_size = 0
 
-func _on_timer_timeout(args) -> void:
-	print("autodestroy %s"% args)
-	autodestroy_label.emit()
-	await get_tree().create_timer(1).timeout
-	queue_free()
+func _on_timer_timeout() -> void:
+	autodestroy_label.emit(self)

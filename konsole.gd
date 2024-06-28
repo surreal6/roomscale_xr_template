@@ -40,7 +40,6 @@ func add_label(msg, fixed, delay):
 	kLabel.connect("autodestroy_label", on_label_autodestroy)
 
 func on_label_autodestroy(kLabel):
-	kLabel.disconnect("autodestroy_label")
-	add_klabel.emit("autodestroy_label", false, 30)
-
+	kLabel.disconnect("autodestroy_label", on_label_autodestroy)
+	kLabel.queue_free()
 	
