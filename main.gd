@@ -205,6 +205,7 @@ func _on_left_hand_button_pressed(action_name):
 
 		active_hand = $XROrigin3D/LeftHand
 		$XROrigin3D/OpenXRCompositionLayerEquirect.controller = active_hand
+		$XROrigin3D/OpenXRCompositionLayerQuad.controller = active_hand
 
 		# Make a visual pulse.
 		_do_tween_energy()
@@ -222,6 +223,7 @@ func _on_right_hand_button_pressed(action_name):
 
 		active_hand = $XROrigin3D/RightHand
 		$XROrigin3D/OpenXRCompositionLayerEquirect.controller = active_hand
+		$XROrigin3D/OpenXRCompositionLayerQuad.controller = active_hand
 
 		# Make a visual pulse.
 		_do_tween_energy()

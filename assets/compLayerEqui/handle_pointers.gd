@@ -3,7 +3,7 @@ extends OpenXRCompositionLayerEquirect
 const NO_INTERSECTION = Vector2(-1.0, -1.0)
 
 @export var controller : XRController3D
-@export var button_action : String = "select"
+@export var button_action : String = "trigger_click"
 
 var was_pressed : bool = false
 var was_intersect : Vector2 = NO_INTERSECTION
