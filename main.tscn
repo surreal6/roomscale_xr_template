@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bcuvadar57iaq"]
+[gd_scene load_steps=16 format=3 uid="uid://bcuvadar57iaq"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_3dsxj"]
 [ext_resource type="PackedScene" uid="uid://007c1kt0uxr1" path="res://assets/passthrough_button/detector.tscn" id="2_jfjvw"]
@@ -31,12 +31,6 @@ size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6k6sc"]
 radius = 0.1
-
-[sub_resource type="SphereMesh" id="SphereMesh_dxhhw"]
-radius = 0.01
-height = 0.02
-radial_segments = 16
-rings = 8
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_3dsxj")
@@ -99,9 +93,6 @@ sort_order = -1
 enable_hole_punch = true
 script = ExtResource("4_guicu")
 controller = NodePath("../LeftHand")
-
-[node name="Pointer" type="MeshInstance3D" parent="XROrigin3D/OpenXRCompositionLayerQuad"]
-mesh = SubResource("SphereMesh_dxhhw")
 
 [node name="OpenXRCompositionLayerEquirect" type="OpenXRCompositionLayerEquirect" parent="XROrigin3D" node_paths=PackedStringArray("layer_viewport", "controller")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32091, 0)
