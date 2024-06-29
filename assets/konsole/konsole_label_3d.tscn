@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://csp5v4fnu10mr"]
 
-[ext_resource type="Script" path="res://konsole/konsole_label_3d.gd" id="1_h6jhu"]
+[ext_resource type="Script" path="res://assets/konsole/konsole_label_3d.gd" id="1_h6jhu"]
 
 [node name="konsole_label_3d" type="Label3D"]
 billboard = 2

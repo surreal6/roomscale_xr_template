@@ -6,7 +6,7 @@ class_name konsole
 signal konsole_ready
 signal add_klabel
 
-const konsole_label : PackedScene = preload("res://konsole/konsole_label_3d.tscn")
+const konsole_label : PackedScene = preload("res://assets/konsole/konsole_label_3d.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

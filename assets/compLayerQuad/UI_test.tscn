@@ -1,17 +1,25 @@
 [gd_scene load_steps=4 format=3 uid="uid://cc7umo6odus5w"]
 
 [ext_resource type="Script" path="res://addons/object-inspector/scripts/inspector.gd" id="1_j2m2l"]
-[ext_resource type="Script" path="res://ui_test.gd" id="1_sesnq"]
-[ext_resource type="Script" path="res://node_2d.gd" id="3_ybuvf"]
+[ext_resource type="Script" path="res://assets/compLayerQuad/ui_test.gd" id="1_sesnq"]
+[ext_resource type="Script" path="res://assets/compLayerQuad/node_2d.gd" id="3_ybuvf"]
 
 [node name="UITest" type="Control"]
+custom_minimum_size = Vector2(512, 512)
 layout_mode = 3
+anchors_preset = 0
+offset_right = 0.511963
+offset_bottom = 0.0799866
+script = ExtResource("1_sesnq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_sesnq")
+color = Color(0.638554, 0.499437, 0.164002, 0.384314)
 
 [node name="ObjectInspector" type="VBoxContainer" parent="."]
 layout_mode = 1
