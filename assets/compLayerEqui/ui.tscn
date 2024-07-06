@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cenb0bfok13vx"]
 
 [ext_resource type="Script" path="res://assets/compLayerEqui/ui.gd" id="1_wnf2v"]
-[ext_resource type="Shader" path="res://assets/compLayerEqui/cursor.gdshader" id="2_hngl5"]
+[ext_resource type="Shader" path="res://assets/shaders/cursor.gdshader" id="2_hngl5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cnxo1"]
 font_size = 64
