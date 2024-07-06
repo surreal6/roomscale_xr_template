@@ -24,8 +24,8 @@ func _process(delta: float) -> void:
 		var value = remap(counter, 0, delay, 1, 0)
 		modulate = Color(1, 1, 1, value)
 		outline_modulate = Color(0,0,0,value)
+		position.y += delta * 0.5
 	if fixed:
-		position.z -= delta * 0.1
 		modulate = Color(0, 0, 0, 1)
 		outline_size = 0
 

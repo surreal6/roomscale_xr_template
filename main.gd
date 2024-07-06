@@ -74,13 +74,13 @@ func _on_reference_frame_changed():
 	get_play_area()
 
 func _on_openxr_session_begun():
-	print_to_konsole("XRInterface: openxr_session_begun")
+	print_to_konsole("XRInterface: openxr_session_begun", false)
 
 func _on_openxr_session_visible():
-	print_to_konsole("XRInterface: openxr_session_visible")
+	print_to_konsole("XRInterface: openxr_session_visible", false)
 
 func _on_openxr_session_focussed():
-	print_to_konsole("XRInterface: openxr_session_focussed")
+	print_to_konsole("XRInterface: openxr_session_focussed", false)
 	get_play_area()
 
 func _on_openxr_session_loss_pending():
@@ -152,10 +152,10 @@ func build_mesh(points):
 		self.add_child(m)
 		for label in labels:
 			m.add_child(label)
-		print_to_konsole("build_mesh")
+		print_to_konsole("build_mesh", false)
 
 func _on_detector_toggled(is_on):
-	print_to_konsole("toggle_passthrough", false, 10)
+	print_to_konsole("toggle_passthrough", false)
 	if is_on:
 		if !switch_to_ar():
 			$ARToggle.on = false
@@ -223,7 +223,6 @@ func _on_right_hand_button_pressed(action_name):
 
 		active_hand = $XROrigin3D/RightHand
 		$XROrigin3D/OpenXRCompositionLayerEquirect.controller = active_hand
-		$XROrigin3D/OpenXRCompositionLayerQuad.controller = active_hand
 
 		# Make a visual pulse.
 		_do_tween_energy()

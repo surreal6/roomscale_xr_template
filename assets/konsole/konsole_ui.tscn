@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://cabob4o65u0a4"]
+
+[node name="KonsoleUI" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(1024, 512)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 512.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.638554, 0.499437, 0.164002, 0.384314)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(1024, 512)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(1024, 384)
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label5" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label6" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label7" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label8" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label9" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label10" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label11" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label12" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label13" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label14" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label15" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label16" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label17" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label18" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label19" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="Label20" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "hola hola hola"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(1024, 128)
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "button 1
+"
+
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "button 2
+"
+
+[node name="Button3" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "button 3
+"

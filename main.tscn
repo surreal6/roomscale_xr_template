@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://bcuvadar57iaq"]
+[gd_scene load_steps=14 format=3 uid="uid://bcuvadar57iaq"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_3dsxj"]
 [ext_resource type="PackedScene" uid="uid://007c1kt0uxr1" path="res://assets/passthrough_button/detector.tscn" id="2_jfjvw"]
 [ext_resource type="PackedScene" uid="uid://csp5v4fnu10mr" path="res://assets/konsole/konsole_label_3d.tscn" id="2_rrxp2"]
 [ext_resource type="Script" path="res://assets/konsole/konsole.gd" id="2_xgyj3"]
 [ext_resource type="PackedScene" uid="uid://cl6m21y2uldtf" path="res://assets/pointers/pointer.tscn" id="3_fxcgp"]
-[ext_resource type="Script" path="res://assets/compLayerQuad/handle_pointers_quad.gd" id="4_guicu"]
 [ext_resource type="Script" path="res://assets/compLayerEqui/handle_pointers_equi.gd" id="5_h2xir"]
 [ext_resource type="PackedScene" uid="uid://cenb0bfok13vx" path="res://assets/compLayerEqui/ui.tscn" id="8_jbh16"]
 
@@ -85,14 +84,6 @@ script = ExtResource("2_xgyj3")
 fixed = false
 msg = "sample float"
 
-[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="XROrigin3D" node_paths=PackedStringArray("layer_viewport", "controller")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.5, 1.8, 0)
-layer_viewport = NodePath("../../UIViewport2")
-sort_order = -1
-enable_hole_punch = true
-script = ExtResource("4_guicu")
-controller = NodePath("../RightHand")
-
 [node name="OpenXRCompositionLayerEquirect" type="OpenXRCompositionLayerEquirect" parent="XROrigin3D" node_paths=PackedStringArray("layer_viewport", "controller")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32091, 0)
 layer_viewport = NodePath("../../UIViewport")
@@ -115,14 +106,6 @@ size = Vector2i(1024, 512)
 render_target_update_mode = 4
 
 [node name="UI" parent="UIViewport" instance=ExtResource("8_jbh16")]
-
-[node name="UIViewport2" type="SubViewport" parent="."]
-disable_3d = true
-transparent_bg = true
-size = Vector2i(1024, 512)
-render_target_update_mode = 4
-
-[node name="UI" parent="UIViewport2" instance=ExtResource("8_jbh16")]
 
 [connection signal="button_pressed" from="XROrigin3D/LeftHand" to="." method="_on_left_hand_button_pressed"]
 [connection signal="button_pressed" from="XROrigin3D/RightHand" to="." method="_on_right_hand_button_pressed"]

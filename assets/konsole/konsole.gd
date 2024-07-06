@@ -36,6 +36,8 @@ func add_label(msg, fixed, delay):
 		move_up_all_children($konsole_float)
 		$konsole_float.add_child(kLabel)
 	kLabel.global_position = $"../XRCamera3D/look_at".global_position
+	if !fixed:
+		kLabel.global_position.y = 1
 
 	kLabel.connect("autodestroy_label", on_label_autodestroy)
 
