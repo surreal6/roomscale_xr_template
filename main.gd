@@ -25,34 +25,24 @@ func _ready():
 		print_to_konsole("support ROOMSCALE: %s" % xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE))
 		
 		if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
-			#xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
-			xr_interface.xr_play_area_mode = XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE
+			xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
+			await get_tree().create_timer(1).timeout
+			print_to_konsole("play area mode: %s" % xr_interface.xr_play_area_mode)
+			get_play_area()
 		else:
-			#xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE)
-			xr_interface.xr_play_area_mode = XRInterface.PlayAreaMode.XR_PLAY_AREA_ROOMSCALE
-		
-		print_to_konsole("play area mode: %s" % xr_interface.xr_play_area_mode)
-		
-		get_play_area()
-		
-		
+			print_to_konsole("STAGE play area mode not supported")
+
 		print_to_konsole("name: %s" % xr_interface.get_name())
 		print_to_konsole("system info: %s" % xr_interface.get_system_info())
 		print_to_konsole("capabilities: %s" % xr_interface.get_capabilities())
 		print_to_konsole("tracking status: %s" % xr_interface.get_tracking_status())	
 		print_to_konsole("ar is anchor detection enabled: %s" % xr_interface.ar_is_anchor_detection_enabled)
-		
-		print_to_konsole("oh, lala", false, 10)
 
-		
-		#xr_interface.trigger_haptic_pulse($XROrigin3D/LeftHand,)
-		
 		# Connect the OpenXR events
 		xr_interface.connect("session_begun", _on_openxr_session_begun)
 		xr_interface.connect("session_visible", _on_openxr_session_visible)
 		xr_interface.connect("session_focussed", _on_openxr_session_focussed)
 		xr_interface.connect("session_loss_pending", _on_openxr_session_loss_pending)
-		
 
 		# not working
 		xr_interface.connect("play_area_changed", _on_play_area_changed)
@@ -63,11 +53,16 @@ func _ready():
 		$XROrigin3D/RightHand/Pointer.visible = true
 		active_hand = $XROrigin3D/RightHand
 		
+		print_to_konsole("oh, lala", false, 10)
+		
 	else:
 		print("OpenXR not initialized, please check if your headset is connected")
 	
 	konsole.connect("konsole_ready", on_konsole_ready)
 	konsole.connect("add_klabel", on_add_klabel)
+
+func _process(delta):
+	$XROrigin3D/XRCamera3D/look_at.global_rotation = Vector3(0.0, 1.5, 0.0)
 
 func _on_reference_frame_changed():
 	print_to_konsole("XRServer: reference_frame_changed")
@@ -86,8 +81,8 @@ func _on_openxr_session_focussed():
 func _on_openxr_session_loss_pending():
 	print_to_konsole("XRInterface: openxr_session_loss_pending")
 
-func _on_play_area_changed(args):
-	print_to_konsole("XRInterface: area changed")
+func _on_play_area_changed():
+	print_to_konsole("XRInterface: area changed", false)
 	get_play_area()
 
 func get_play_area():
@@ -153,6 +148,9 @@ func build_mesh(points):
 		for label in labels:
 			m.add_child(label)
 		print_to_konsole("build_mesh", false)
+	else:
+		#print_to_konsole("no points in play area")
+		print_to_konsole("no points in play area", false)
 
 func _on_detector_toggled(is_on):
 	print_to_konsole("toggle_passthrough", false)
@@ -205,7 +203,6 @@ func _on_left_hand_button_pressed(action_name):
 
 		active_hand = $XROrigin3D/LeftHand
 		$XROrigin3D/OpenXRCompositionLayerEquirect.controller = active_hand
-		$XROrigin3D/OpenXRCompositionLayerQuad.controller = active_hand
 
 		# Make a visual pulse.
 		_do_tween_energy()
@@ -213,7 +210,8 @@ func _on_left_hand_button_pressed(action_name):
 		# And make us feel it.
 		# Note: frequence == 0.0 => XR runtime chooses optimal frequency for a given controller.
 		active_hand.trigger_haptic_pulse("haptic", 0.0, 1.0, 0.5, 0.0)
-
+	if action_name == "ax_button":
+		recenter_operation()
 
 func _on_right_hand_button_pressed(action_name):
 	if action_name == "trigger_click":
@@ -230,3 +228,9 @@ func _on_right_hand_button_pressed(action_name):
 		# And make us feel it.
 		# Note: frequence == 0.0 => XR runtime chooses optimal frequency for a given controller.
 		active_hand.trigger_haptic_pulse("haptic", 0.0, 1.0, 0.5, 0.0)
+	if action_name == "ax_button":
+		recenter_operation()
+
+func recenter_operation() -> void:
+	print_to_konsole("recenter", false)
+	XRServer.center_on_hmd(1, true)

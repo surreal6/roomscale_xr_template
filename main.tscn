@@ -1,8 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://bcuvadar57iaq"]
+[gd_scene load_steps=13 format=3 uid="uid://bcuvadar57iaq"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_3dsxj"]
 [ext_resource type="PackedScene" uid="uid://007c1kt0uxr1" path="res://assets/passthrough_button/detector.tscn" id="2_jfjvw"]
-[ext_resource type="PackedScene" uid="uid://csp5v4fnu10mr" path="res://assets/konsole/konsole_label_3d.tscn" id="2_rrxp2"]
 [ext_resource type="Script" path="res://assets/konsole/konsole.gd" id="2_xgyj3"]
 [ext_resource type="PackedScene" uid="uid://cl6m21y2uldtf" path="res://assets/pointers/pointer.tscn" id="3_fxcgp"]
 [ext_resource type="Script" path="res://assets/compLayerEqui/handle_pointers_equi.gd" id="5_h2xir"]
@@ -46,7 +45,7 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 
 [node name="look_at" type="Node3D" parent="XROrigin3D/XRCamera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.63034)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
@@ -79,10 +78,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -2.63034)
 script = ExtResource("2_xgyj3")
 
 [node name="konsole_float" type="Node3D" parent="XROrigin3D/konsole"]
-
-[node name="klabel_sample_float" parent="XROrigin3D/konsole/konsole_float" instance=ExtResource("2_rrxp2")]
-fixed = false
-msg = "sample float"
 
 [node name="OpenXRCompositionLayerEquirect" type="OpenXRCompositionLayerEquirect" parent="XROrigin3D" node_paths=PackedStringArray("layer_viewport", "controller")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32091, 0)
