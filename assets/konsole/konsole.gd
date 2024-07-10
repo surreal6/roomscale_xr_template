@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 	var fixedLabels = get_tree().get_nodes_in_group("fixed_klabels")
 	var floatLabels = get_tree().get_nodes_in_group("float_klabels")
 
-func move_up_all_children(konsole_parent, v_size = 0.1):
+func move_up_all_children(konsole_parent, v_size = 0.05):
 	for node in konsole_parent.get_children():
 		node.position.y += v_size
 
