@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhyam3il8hnph"]
+
+[ext_resource type="PackedScene" uid="uid://cl6m21y2uldtf" path="res://assets/pointers/pointer.tscn" id="1_vjkd8"]
+[ext_resource type="Script" path="res://scripts/startXR_better.gd" id="2_6lhaj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5gufi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kqpqi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ck16f"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_b4rkr"]
+sky_material = SubResource("ProceduralSkyMaterial_ck16f")
+
+[sub_resource type="Environment" id="Environment_rap4c"]
+background_mode = 2
+sky = SubResource("Sky_b4rkr")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="mainStage" type="Node3D"]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
+tracker = &"left_hand"
+
+[node name="Test" type="MeshInstance3D" parent="XROrigin3D/LeftHand"]
+mesh = SubResource("BoxMesh_5gufi")
+
+[node name="Pointer" parent="XROrigin3D/LeftHand" instance=ExtResource("1_vjkd8")]
+visible = false
+
+[node name="RightHand" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="Test" type="MeshInstance3D" parent="XROrigin3D/RightHand"]
+mesh = SubResource("BoxMesh_kqpqi")
+skeleton = NodePath("../../LeftHand")
+
+[node name="Pointer" parent="XROrigin3D/RightHand" instance=ExtResource("1_vjkd8")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rap4c")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="startXr" type="Node3D" parent="."]
+script = ExtResource("2_6lhaj")
