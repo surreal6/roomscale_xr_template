@@ -11,6 +11,11 @@ enum WebXRPrimary {
 	TRACKPAD,
 }
 
+enum PlayAreaMode {
+	ROOMSCALE,
+	STATIC,
+}
+
 
 @export_group("Input")
 
@@ -36,9 +41,10 @@ enum WebXRPrimary {
 ## User setting for WebXR primary
 @export var webxr_primary : WebXRPrimary = WebXRPrimary.AUTO: set = set_webxr_primary
 
+@export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
 
 ## Settings file name to persist user settings
-var settings_file_name : String = "user://xtools_user_settings.json"
+var settings_file_name : String = "user://ag_user_settings.json"
 
 ## Records the first input to generate input (thumbstick or trackpad).
 var webxr_auto_primary := 0
@@ -64,6 +70,7 @@ func reset_to_defaults() -> void:
 	webxr_primary = WebXRPrimary.AUTO
 	webxr_auto_primary = 0
 	haptics_scale = XRToolsRumbleManager.get_default_haptics_scale()
+	play_area_mode = PlayAreaMode.ROOMSCALE
 
 ## Set the player height property
 func set_player_height(new_value : float) -> void:
@@ -80,6 +87,11 @@ func set_webxr_primary(new_value : WebXRPrimary) -> void:
 			webxr_primary_changed.emit(webxr_auto_primary)
 	else:
 		webxr_primary_changed.emit(webxr_primary)
+
+func set_play_area_mode(new_value : PlayAreaMode) -> void:
+	play_area_mode = new_value
+	print("play area mode set to %s" % new_value)
+	pass
 
 
 ## Gets the WebXR primary (taking into account auto detection).
@@ -104,6 +116,9 @@ func save() -> void:
 		},
 		"webxr" : {
 			"webxr_primary" : webxr_primary,
+		},
+		"options" : {
+			"play_area_mode" : play_area_mode,
 		}
 	}
 
