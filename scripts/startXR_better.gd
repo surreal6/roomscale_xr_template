@@ -13,6 +13,7 @@ var xr_interface : OpenXRInterface
 var xr_is_focussed = false
 
 @onready var main_stage = $".."
+@onready var menu_pivot = $"../menuPivot"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,11 +44,13 @@ func _ready():
 		await get_tree().create_timer(1).timeout
 		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
 		
+		var player
+		
 		if AGUserSettings.play_area_mode == AGUserSettings.PlayAreaMode.ROOMSCALE:
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
-				var player = PlayerRoomScale.instantiate()
+				player = PlayerRoomScale.instantiate()
 				main_stage.add_child.call_deferred(player)
 			else:
 				print("STAGE play area mode not supported")
@@ -59,7 +62,7 @@ func _ready():
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING)
-				var player = PlayerStanding.instantiate()
+				player = PlayerStanding.instantiate()
 				player.position.y += 2
 				main_stage.add_child.call_deferred(player)
 			else:
@@ -68,7 +71,11 @@ func _ready():
 				## change play area preferences and reload
 				get_tree().quit()
 		
-		# check wich play area mode is setup
+		
+		player.menu = menu_pivot
+		menu_pivot.xr_camera = player.get_node("XRCamera3D")
+		
+		# check which play area mode is setup
 		await get_tree().create_timer(1).timeout
 		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
 	else:

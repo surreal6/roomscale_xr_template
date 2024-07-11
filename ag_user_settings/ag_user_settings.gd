@@ -61,7 +61,6 @@ func set_play_area_mode(new_value : PlayAreaMode) -> void:
 		var enum_value = AGUserSettings.PlayAreaMode.find_key(new_value)
 		print("play area mode set to %s" % enum_value)
 
-
 ## Save the settings to file
 func save() -> void:
 	# Convert the settings to a dictionary
@@ -92,7 +91,7 @@ func save() -> void:
 	# Write the settings text to the file
 	file.store_line(settings_text)
 	file.close()
-
+	get_tree().reload_current_scene()
 
 ## Load the settings from file
 func _load() -> void:

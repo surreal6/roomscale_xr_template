@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://007c1kt0uxr1" path="res://assets/passthrough_button/detector.tscn" id="2_jfjvw"]
 [ext_resource type="Script" path="res://assets/konsole/konsole.gd" id="2_xgyj3"]
 [ext_resource type="PackedScene" uid="uid://cl6m21y2uldtf" path="res://assets/pointers/pointer.tscn" id="3_fxcgp"]
-[ext_resource type="Script" path="res://assets/compLayerEqui/handle_pointers_equi.gd" id="5_h2xir"]
+[ext_resource type="Script" path="res://assets/compLayerEqui/handle_pointers_equi.gd" id="4_l7l0s"]
 [ext_resource type="PackedScene" uid="uid://cenb0bfok13vx" path="res://assets/compLayerEqui/ui.tscn" id="8_jbh16"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bbe0h"]
@@ -79,16 +79,14 @@ script = ExtResource("2_xgyj3")
 
 [node name="konsole_float" type="Node3D" parent="XROrigin3D/konsole"]
 
-[node name="OpenXRCompositionLayerEquirect" type="OpenXRCompositionLayerEquirect" parent="XROrigin3D" node_paths=PackedStringArray("layer_viewport", "controller")]
+[node name="OpenXRCompositionLayerEquirect" type="OpenXRCompositionLayerEquirect" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32091, 0)
-layer_viewport = NodePath("../../UIViewport")
 sort_order = -1
 enable_hole_punch = true
 radius = 2.0
 upper_vertical_angle = 0.436332
 lower_vertical_angle = 0.436332
-script = ExtResource("5_h2xir")
-controller = NodePath("../RightHand")
+script = ExtResource("4_l7l0s")
 
 [node name="ARToggle" parent="." instance=ExtResource("2_jfjvw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

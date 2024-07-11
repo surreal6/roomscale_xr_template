@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dhyam3il8hnph"]
+[gd_scene load_steps=9 format=3 uid="uid://dhyam3il8hnph"]
 
 [ext_resource type="PackedScene" uid="uid://bernhtb8ybkle" path="res://assets/floor.tscn" id="2_0f1ca"]
 [ext_resource type="Script" path="res://scripts/startXR_better.gd" id="2_6lhaj"]
+[ext_resource type="Script" path="res://scenes/menu_pivot.gd" id="3_0jyru"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="3_3ror3"]
+[ext_resource type="PackedScene" uid="uid://ytsxet2k47lj" path="res://ag_user_settings/ag_user_settings_ui.tscn" id="4_3mas0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ck16f"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -29,3 +32,13 @@ shadow_enabled = true
 script = ExtResource("2_6lhaj")
 
 [node name="floor" parent="." instance=ExtResource("2_0f1ca")]
+
+[node name="menuPivot" type="Node3D" parent="."]
+script = ExtResource("3_0jyru")
+
+[node name="menu" parent="menuPivot" instance=ExtResource("3_3ror3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+scene = ExtResource("4_3mas0")
+transparent = 0
+unshaded = true
+scene_properties_keys = PackedStringArray("ag_user_settings_ui.gd")

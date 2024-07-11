@@ -3,17 +3,16 @@
 [ext_resource type="Script" path="res://ag_user_settings/ag_user_settings_ui.gd" id="1_dj8tw"]
 
 [node name="UserSettingsUI" type="TabContainer"]
-offset_right = 350.0
-offset_bottom = 126.0
+offset_right = 300.0
+offset_bottom = 159.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 12
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 script = ExtResource("1_dj8tw")
 
 [node name="Input" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
@@ -143,6 +142,7 @@ theme_override_font_sizes/font_size = 12
 text = "Reset"
 
 [node name="Options" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
