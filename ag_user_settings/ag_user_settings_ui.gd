@@ -7,7 +7,6 @@ signal player_height_changed(new_height)
 @onready var y_deadzone_slider = $Input/InputVBox/yAxisDeadZone/yAxisDeadZoneSlider
 @onready var x_deadzone_slider = $Input/InputVBox/xAxisDeadZone/xAxisDeadZoneSlider
 @onready var player_height_slider = $Player/PlayerVBox/PlayerHeight/PlayerHeightSlider
-@onready var webxr_primary_button = $WebXR/WebXRVBox/WebXR/WebXRPrimary
 @onready var play_area_mode_button = $Options/OptionsVBox/Options/PlayAreaMode
 
 func _update():
@@ -20,18 +19,12 @@ func _update():
 	# Player
 	player_height_slider.value = AGUserSettings.player_height
 
-	# WebXR
-	webxr_primary_button.selected = AGUserSettings.webxr_primary
-	
 	#Options
 	play_area_mode_button.selected = AGUserSettings.play_area_mode
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var webxr_interface = XRServer.find_interface("WebXR")
-	set_tab_hidden(2, webxr_interface == null)
-
 	if AGUserSettings:
 		_update()
 	else:
@@ -60,11 +53,6 @@ func _on_SnapTurningCB_pressed():
 func _on_PlayerHeightSlider_drag_ended(_value_changed):
 	AGUserSettings.player_height = player_height_slider.value
 	emit_signal("player_height_changed", AGUserSettings.player_height)
-
-
-func _on_web_xr_primary_item_selected(index: int) -> void:
-	var enum_value = AGUserSettings.WebXRPrimary.find_key(index)
-	AGUserSettings.webxr_primary = AGUserSettings.WebXRPrimary[enum_value]
 
 
 func _on_y_axis_dead_zone_slider_value_changed(value):

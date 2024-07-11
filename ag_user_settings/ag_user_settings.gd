@@ -1,21 +1,9 @@
 extends Node
 
-
-## Emitted when the WebXR primary is changed (either by the user or auto detected).
-signal webxr_primary_changed (value)
-
-
-enum WebXRPrimary {
-	AUTO,
-	THUMBSTICK,
-	TRACKPAD,
-}
-
 enum PlayAreaMode {
 	ROOMSCALE,
-	STATIC,
+	STANDING,
 }
-
 
 @export_group("Input")
 
@@ -36,26 +24,16 @@ enum PlayAreaMode {
 ## User setting for player height
 @export var player_height : float = 1.85: set = set_player_height
 
-@export_group("WebXR")
+@export_group("Options")
 
-## User setting for WebXR primary
-@export var webxr_primary : WebXRPrimary = WebXRPrimary.AUTO: set = set_webxr_primary
-
-@export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
+@export var play_area_mode : PlayAreaMode = PlayAreaMode.STANDING: set = set_play_area_mode
 
 ## Settings file name to persist user settings
 var settings_file_name : String = "user://ag_user_settings.json"
 
-## Records the first input to generate input (thumbstick or trackpad).
-var webxr_auto_primary := 0
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var webxr_interface = XRServer.find_interface("WebXR")
-	if webxr_interface:
-		XRServer.tracker_added.connect(self._on_webxr_tracker_added)
-
 	_load()
 
 
@@ -67,38 +45,21 @@ func reset_to_defaults() -> void:
 	y_axis_dead_zone = XRTools.get_y_axis_dead_zone()
 	x_axis_dead_zone = XRTools.get_x_axis_dead_zone()
 	player_height = XRTools.get_player_standard_height()
-	webxr_primary = WebXRPrimary.AUTO
-	webxr_auto_primary = 0
 	haptics_scale = XRToolsRumbleManager.get_default_haptics_scale()
-	play_area_mode = PlayAreaMode.ROOMSCALE
+	play_area_mode = PlayAreaMode.STANDING
+
 
 ## Set the player height property
 func set_player_height(new_value : float) -> void:
 	player_height = clamp(new_value, 1.0, 2.5)
 
-## Set the WebXR primary
-func set_webxr_primary(new_value : WebXRPrimary) -> void:
-	webxr_primary = new_value
-	if webxr_primary == WebXRPrimary.AUTO:
-		if webxr_auto_primary == 0:
-			# Don't emit the signal yet, wait until we detect which to use.
-			pass
-		else:
-			webxr_primary_changed.emit(webxr_auto_primary)
-	else:
-		webxr_primary_changed.emit(webxr_primary)
 
 func set_play_area_mode(new_value : PlayAreaMode) -> void:
-	play_area_mode = new_value
-	print("play area mode set to %s" % new_value)
-	pass
-
-
-## Gets the WebXR primary (taking into account auto detection).
-func get_real_webxr_primary() -> WebXRPrimary:
-	if webxr_primary == WebXRPrimary.AUTO:
-		return webxr_auto_primary
-	return webxr_primary
+	print("AG_USER set play area mode to %s" % new_value)
+	if new_value != play_area_mode:
+		play_area_mode = new_value
+		var enum_value = AGUserSettings.PlayAreaMode.find_key(new_value)
+		print("play area mode set to %s" % enum_value)
 
 
 ## Save the settings to file
@@ -113,9 +74,6 @@ func save() -> void:
 		},
 		"player" : {
 			"height" : player_height
-		},
-		"webxr" : {
-			"webxr_primary" : webxr_primary,
 		},
 		"options" : {
 			"play_area_mode" : play_area_mode,
@@ -134,19 +92,6 @@ func save() -> void:
 	# Write the settings text to the file
 	file.store_line(settings_text)
 	file.close()
-
-
-## Get the action associated with a WebXR primary choice
-static func get_webxr_primary_action(primary : WebXRPrimary) -> String:
-	match primary:
-		WebXRPrimary.THUMBSTICK:
-			return "thumbstick"
-
-		WebXRPrimary.TRACKPAD:
-			return "trackpad"
-
-		_:
-			return "auto"
 
 
 ## Load the settings from file
@@ -193,31 +138,12 @@ func _load() -> void:
 		if player.has("height"):
 			player_height = player["height"]
 
-	# Parse our WebXR settings
-	if settings.has("webxr"):
-		var webxr : Dictionary = settings["webxr"]
-		if webxr.has("webxr_primary"):
-			webxr_primary = webxr["webxr_primary"]
+	# Parse our Options settings
+	if settings.has("options"):
+		var options : Dictionary = settings["options"]
+		if options.has("play_area_mode"):
+			play_area_mode = options["play_area_mode"]
 
-
-## Used to connect to tracker events when using WebXR.
-func _on_webxr_tracker_added(tracker_name: StringName, _type: int) -> void:
-	if tracker_name == &"left_hand" or tracker_name == &"right_hand":
-		var tracker := XRServer.get_tracker(tracker_name)
-		tracker.input_vector2_changed.connect(self._on_webxr_vector2_changed)
-
-
-## Used to auto detect which "primary" input gets used first.
-func _on_webxr_vector2_changed(name: String, _vector: Vector2) -> void:
-	if webxr_auto_primary == 0:
-		if name == "thumbstick":
-			webxr_auto_primary = WebXRPrimary.THUMBSTICK
-		elif name == "trackpad":
-			webxr_auto_primary = WebXRPrimary.TRACKPAD
-
-		if webxr_auto_primary != 0:
-			# Let the developer know which one is chosen.
-			webxr_primary_changed.emit(webxr_auto_primary)
 
 ## Helper function to remap input vector with deadzone values
 func get_adjusted_vector2(p_controller, p_input_action):
