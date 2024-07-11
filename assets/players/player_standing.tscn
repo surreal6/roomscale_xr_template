@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://bj8twuda6rcnf"]
+
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="1_7teve"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="2_3d0tp"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_sux86"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5gufi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaeau"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kqpqi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glaoq"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="XROrigin3DStanding" type="XROrigin3D"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftHand" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
+tracker = &"left_hand"
+
+[node name="Test" type="MeshInstance3D" parent="LeftHand"]
+mesh = SubResource("BoxMesh_5gufi")
+surface_material_override/0 = SubResource("StandardMaterial3D_jaeau")
+
+[node name="MovementDirect" parent="LeftHand/Test" instance=ExtResource("1_7teve")]
+strafe = true
+
+[node name="RightHand" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="Test" type="MeshInstance3D" parent="RightHand"]
+mesh = SubResource("BoxMesh_kqpqi")
+skeleton = NodePath("../../LeftHand")
+surface_material_override/0 = SubResource("StandardMaterial3D_glaoq")
+
+[node name="MovementDirect" parent="RightHand" instance=ExtResource("1_7teve")]
+
+[node name="MovementTurn" parent="RightHand" instance=ExtResource("2_3d0tp")]
+
+[node name="PlayerBody" parent="." instance=ExtResource("3_sux86")]

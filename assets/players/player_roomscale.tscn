@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://efx4wfle10dw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5gufi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s83fb"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kqpqi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1cqw4"]
+albedo_color = Color(0, 1, 1, 1)
+
+[node name="XROrigin3DRoomscale" type="XROrigin3D"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftHand" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
+tracker = &"left_hand"
+
+[node name="Test" type="MeshInstance3D" parent="LeftHand"]
+mesh = SubResource("BoxMesh_5gufi")
+surface_material_override/0 = SubResource("StandardMaterial3D_s83fb")
+
+[node name="RightHand" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="Test" type="MeshInstance3D" parent="RightHand"]
+mesh = SubResource("BoxMesh_kqpqi")
+skeleton = NodePath("../../LeftHand")
+surface_material_override/0 = SubResource("StandardMaterial3D_1cqw4")

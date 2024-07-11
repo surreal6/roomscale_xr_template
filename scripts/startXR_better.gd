@@ -4,10 +4,15 @@ signal focus_lost
 signal focus_gained
 signal pose_recentered
 
+const PlayerRoomScale = preload("res://assets/players/player_roomscale.tscn")
+const PlayerStanding = preload("res://assets/players/player_standing.tscn")
+
 @export var maximum_refresh_rate : int = 90
 
 var xr_interface : OpenXRInterface
 var xr_is_focussed = false
+
+@onready var main_stage = $".."
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,8 +40,37 @@ func _ready():
 		xr_interface.session_stopping.connect(_on_openxr_stopping)
 		xr_interface.pose_recentered.connect(_on_openxr_pose_recentered)
 		
-		print("xr ready")
-		print("play area mode: %s" % xr_interface.xr_play_area_mode)
+		await get_tree().create_timer(1).timeout
+		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
+		
+		if AGUserSettings.play_area_mode == AGUserSettings.PlayAreaMode.ROOMSCALE:
+			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
+				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE:
+					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
+				var player = PlayerRoomScale.instantiate()
+				main_stage.add_child.call_deferred(player)
+			else:
+				print("STAGE play area mode not supported")
+				# TODO
+				## change play area preferences and reload
+				get_tree().quit()
+		
+		if AGUserSettings.play_area_mode == AGUserSettings.PlayAreaMode.STANDING:
+			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING):
+				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING:
+					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING)
+				var player = PlayerStanding.instantiate()
+				player.position.y += 2
+				main_stage.add_child.call_deferred(player)
+			else:
+				print("SITTING play area mode not supported")
+				# TODO
+				## change play area preferences and reload
+				get_tree().quit()
+		
+		# check wich play area mode is setup
+		await get_tree().create_timer(1).timeout
+		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
 	else:
 		# We couldn't start OpenXR.
 		print("OpenXR not instantiated!")
