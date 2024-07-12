@@ -2,13 +2,13 @@
 
 [ext_resource type="Material" uid="uid://cst632e8ausge" path="res://assets/materials/yellow_standard_material_3d.tres" id="1_07njh"]
 [ext_resource type="Script" path="res://assets/floor/floor.gd" id="1_nacgo"]
-[ext_resource type="Texture2D" uid="uid://d4kojpgieteer" path="res://assets/textures/color_grid_1024x1024.png" id="2_fr8s5"]
+[ext_resource type="Texture2D" uid="uid://d1krah7o2u38c" path="res://assets/textures/color_grid_1280x1280.png" id="2_p4qt0"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_x28x4"]
 size = Vector2(10, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0dgnu"]
-albedo_texture = ExtResource("2_fr8s5")
+albedo_texture = ExtResource("2_p4qt0")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yo2ot"]
 size = Vector3(100, 0.2, 100)
