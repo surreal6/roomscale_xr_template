@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bernhtb8ybkle"]
 
 [ext_resource type="Material" uid="uid://cst632e8ausge" path="res://assets/materials/yellow_standard_material_3d.tres" id="1_07njh"]
-[ext_resource type="Script" path="res://assets/floor.gd" id="1_nacgo"]
+[ext_resource type="Script" path="res://assets/floor/floor.gd" id="1_nacgo"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_apjtg"]
 size = Vector3(10, 0.2, 10)
