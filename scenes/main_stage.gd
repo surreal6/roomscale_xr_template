@@ -9,11 +9,21 @@ var player : Node3D
 var menuXR : Node3D
 var menuXR_active = false
 
+var counter = 0
+
 func _ready():
 	$startXr.connect("focus_gained", on_focus_gained)
 	$startXr.connect("xr_interface_ready", on_xr_interface_ready)
 	AGUserSettings.connect("switch_to_ar", on_switch_to_ar)
 	AGUserSettings.connect("switch_to_vr", on_switch_to_vr)
+
+
+func _process(delta):
+	counter += delta
+	if counter > 5:
+		var cam_height = str(player.get_node("XRCamera3D").position.y)
+		DebugKonsole.print(cam_height, false)
+		counter = 0
 
 func on_focus_gained():
 	print("FOCUS___________________")
