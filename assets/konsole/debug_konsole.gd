@@ -11,12 +11,12 @@ func setup_fixed_konsole(camera_node):
 	var look_at_node = Node3D.new()
 	var float_node = Node3D.new()
 	camera_node.add_child(look_at_node)
-	camera_node.add_child(float_node)
+	add_child(float_node)
 	look_at_node.position.z = -2
 	float_node.position.z = -1.5
 	fixed_konsole = look_at_node
 	float_konsole = float_node
-	DebugKonsole.print("fixed_konsole y: %s" % fixed_konsole.global_position.y)
+	DebugKonsole.print("fixed_konsole y: %s" % camera_node.global_position.y)
 	DebugKonsole.print("float_konsole y: %s" % float_konsole.global_position.y)
 
 func print(msg, fixed = true, delay = 5):

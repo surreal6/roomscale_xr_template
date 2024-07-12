@@ -21,7 +21,7 @@ func _ready():
 func _process(delta):
 	counter += delta
 	if counter > 5:
-		var cam_height = str(player.get_node("XRCamera3D").position.y)
+		var cam_height = str(player.get_node("XRCamera3D").global_position.y)
 		DebugKonsole.print(cam_height, false)
 		counter = 0
 
@@ -43,11 +43,14 @@ func on_xr_interface_ready():
 			player = PlayerRoomScale.instantiate()
 			add_child(player)
 			$UserSettingsUI.queue_free()
+			$startXr.get_play_area()
 		1:
 			player = PlayerStanding.instantiate()
 			player.position.y += 2
 			add_child(player)
 			$UserSettingsUI.queue_free()
+			# wait for player to touch floor
+			await get_tree().create_timer(2).timeout
 		2:
 			player = PlayerFlat.instantiate()
 			player.position.y += 2

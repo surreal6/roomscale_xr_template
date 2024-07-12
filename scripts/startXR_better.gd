@@ -14,10 +14,14 @@ enum GameMode {
 @export var maximum_refresh_rate : int = 90
 @export var game_mode : GameMode = GameMode.ROOMSCALE
 
+@onready var main_stage = $".."
 @onready var environment : Environment = $"../WorldEnvironment".environment
 
 var xr_interface : OpenXRInterface
 var xr_is_focussed = false
+
+var play_area
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -198,3 +202,45 @@ func switch_to_vr() -> bool:
 	environment.background_mode = Environment.BG_SKY
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_BG
 	return true
+
+## DRAW PLAY AREA
+
+func get_play_area():
+	await get_tree().create_timer(1).timeout
+	play_area = xr_interface.get_play_area()
+	build_mesh(play_area)
+
+func build_mesh(points):
+	if points.size() > 0:
+		for node in get_tree().get_nodes_in_group("play_area_mesh"):
+			node.queue_free()
+		var st = SurfaceTool.new()
+		var labels = []
+		st.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
+		for point in points:
+			st.add_vertex(point)
+			labels.append(print_to_space(point))
+		st.add_vertex(points[0])
+		var mesh = st.commit()
+		var m = MeshInstance3D.new()
+		m.name = "play_area_mesh"
+		m.add_to_group("play_area_mesh")
+		m.mesh = mesh
+		m.position.y += 0.001
+		main_stage.add_child(m)
+		for label in labels:
+			m.add_child(label)
+		DebugKonsole.print("build_mesh", false)
+	else:
+		DebugKonsole.print("no points in play area", false)
+
+func print_to_space(position):
+	var label = Label3D.new()
+	label.text = "%s" % position
+	label.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+	label.no_depth_test = true
+	label.font_size = 8
+	label.outline_size = 0
+	label.position = position
+	label.modulate = Color("#000")
+	return label

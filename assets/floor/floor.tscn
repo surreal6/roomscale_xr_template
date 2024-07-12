@@ -17,7 +17,7 @@ size = Vector3(100, 0.2, 100)
 size = Vector2(10, 0.2)
 
 [sub_resource type="QuadMesh" id="QuadMesh_osfhr"]
-size = Vector2(10, 0.1)
+size = Vector2(20, 0.025)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hroee"]
 shading_mode = 0
@@ -42,22 +42,22 @@ shape = SubResource("BoxShape3D_yo2ot")
 [node name="floor_limits" type="Node3D" parent="."]
 
 [node name="MeshInstance3D1" type="MeshInstance3D" parent="floor_limits"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, 4.9)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.001, 4.9)
 mesh = SubResource("QuadMesh_ragln")
 surface_material_override/0 = ExtResource("1_07njh")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="floor_limits"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, -4.9)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.001, -4.9)
 mesh = SubResource("QuadMesh_ragln")
 surface_material_override/0 = ExtResource("1_07njh")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="floor_limits"]
-transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 4.9, 0.01, 0)
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 4.9, 0.001, 0)
 mesh = SubResource("QuadMesh_ragln")
 surface_material_override/0 = ExtResource("1_07njh")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="floor_limits"]
-transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -4.9, 0.01, 0)
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -4.9, 0.001, 0)
 mesh = SubResource("QuadMesh_ragln")
 surface_material_override/0 = ExtResource("1_07njh")
 

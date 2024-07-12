@@ -36,3 +36,7 @@ script = ExtResource("2_6lhaj")
 [node name="UserSettingsUI" parent="." instance=ExtResource("4_3mas0")]
 visible = false
 scale = Vector2(2, 2)
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
