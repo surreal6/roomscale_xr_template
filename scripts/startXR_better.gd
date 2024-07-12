@@ -41,8 +41,8 @@ func _ready():
 		xr_interface.session_stopping.connect(_on_openxr_stopping)
 		xr_interface.pose_recentered.connect(_on_openxr_pose_recentered)
 		
+		# waiting for xr_interface to finish auto initialization
 		await get_tree().create_timer(1).timeout
-		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
 		
 		var player
 		
@@ -71,12 +71,10 @@ func _ready():
 				## change play area preferences and reload
 				get_tree().quit()
 		
-		
-		player.menu = menu_pivot
 		menu_pivot.xr_camera = player.get_node("XRCamera3D")
 		
 		# check which play area mode is setup
-		await get_tree().create_timer(1).timeout
+		#await get_tree().create_timer(1).timeout
 		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
 	else:
 		# We couldn't start OpenXR.
