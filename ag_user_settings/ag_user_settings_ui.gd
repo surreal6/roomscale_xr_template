@@ -23,6 +23,8 @@ func _update():
 	#Options
 	play_area_mode_button.selected = AGUserSettings.play_area_mode
 	passthrough_button.button_pressed = AGUserSettings.passthrough
+	if !AGUserSettings.passthrough_available:
+		$Options/OptionsVBox/Passthrough.hide()
 
 
 # Called when the node enters the scene tree for the first time.
@@ -78,3 +80,7 @@ func _on_haptics_scale_slider_value_changed(value):
 func _on_play_area_mode_item_selected(index: int) -> void:
 	var enum_value = AGUserSettings.PlayAreaMode.find_key(index)
 	AGUserSettings.play_area_mode = AGUserSettings.PlayAreaMode[enum_value]
+
+
+func _on_passthrough_cb_pressed(value):
+	AGUserSettings.passthrough = value

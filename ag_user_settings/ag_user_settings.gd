@@ -1,5 +1,8 @@
 extends Node
 
+signal switch_to_ar
+signal switch_to_vr
+
 enum PlayAreaMode {
 	ROOMSCALE,
 	STANDING,
@@ -30,7 +33,9 @@ enum PlayAreaMode {
 @export var system_info : Dictionary
 
 @export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
-@export var passthrough : bool = false
+@export var passthrough : bool = false: set = set_passthrough
+
+@export var passthrough_available : bool = true
 
 ## Settings file name to persist user settings
 var settings_file_name : String = "user://ag_user_settings.json"
@@ -52,6 +57,7 @@ func reset_to_defaults() -> void:
 	haptics_scale = XRToolsRumbleManager.get_default_haptics_scale()
 	play_area_mode = PlayAreaMode.ROOMSCALE
 	passthrough = false
+	passthrough_available = true
 
 ## Set the player height property
 func set_player_height(new_value : float) -> void:
@@ -63,6 +69,15 @@ func set_play_area_mode(new_value : PlayAreaMode) -> void:
 		play_area_mode = new_value
 		var enum_value = AGUserSettings.PlayAreaMode.find_key(new_value)
 		print("play area mode set to %s" % enum_value)
+
+
+func set_passthrough(new_value : bool) -> void:
+	if passthrough != new_value:
+		passthrough = new_value
+		if new_value:
+			switch_to_ar.emit()
+		else:
+			switch_to_vr.emit()
 
 
 ## Save the settings to file
@@ -82,6 +97,7 @@ func save() -> void:
 			"xr_enabled" : xr_enabled,
 			"play_area_mode" : play_area_mode,
 			"passthrough" : passthrough,
+			"passthrough_available" : passthrough_available,
 		}
 	}
 
@@ -156,6 +172,8 @@ func _load() -> void:
 			play_area_mode = options["play_area_mode"]
 		if options.has("passthrough"):
 			passthrough = options["passthrough"]
+		#if options.has("passthrough_available"):
+			#passthrough_available = options["passthrough_available"]
 
 
 ## Helper function to remap input vector with deadzone values

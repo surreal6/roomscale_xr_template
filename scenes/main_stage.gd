@@ -12,10 +12,21 @@ var menuXR_active = false
 func _ready():
 	$startXr.connect("focus_gained", on_focus_gained)
 	$startXr.connect("xr_interface_ready", on_xr_interface_ready)
-
+	AGUserSettings.connect("switch_to_ar", on_switch_to_ar)
+	AGUserSettings.connect("switch_to_vr", on_switch_to_vr)
 
 func on_focus_gained():
 	print("FOCUS___________________")
+
+
+func on_switch_to_ar():
+	DebugKonsole.print("switch_to_ar")
+	$startXr.switch_to_ar()
+
+
+func on_switch_to_vr():
+	DebugKonsole.print("switch_to_vr")
+	$startXr.switch_to_vr()
 
 
 func on_xr_interface_ready():

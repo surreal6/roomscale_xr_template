@@ -14,6 +14,8 @@ enum GameMode {
 @export var maximum_refresh_rate : int = 90
 @export var game_mode : GameMode = GameMode.ROOMSCALE
 
+@onready var environment : Environment = $"../WorldEnvironment".environment
+
 var xr_interface : OpenXRInterface
 var xr_is_focussed = false
 
@@ -76,8 +78,7 @@ func _ready():
 		
 		AGUserSettings.xr_enabled = true
 		AGUserSettings.system_info = xr_interface.get_system_info()
-		print("AGUserSettings: system info: \n%s" % AGUserSettings.system_info)
-		
+		AGUserSettings.passthrough_available = is_ar_available()
 	else:
 		# We couldn't start OpenXR.
 		print("OpenXR not instantiated!")
@@ -152,3 +153,48 @@ func _on_openxr_pose_recentered() -> void:
 	# This is game implementation dependent.
 	print("OpenXR is recentering")
 	emit_signal("pose_recentered")
+
+
+func is_ar_available() -> bool:
+	if xr_interface:
+		var modes = xr_interface.get_supported_environment_blend_modes()
+		if XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND in modes:
+			return true
+		elif XRInterface.XR_ENV_BLEND_MODE_ADDITIVE in modes:
+			return true
+		else:
+			return false
+	else:
+		return false
+
+func switch_to_ar() -> bool:
+	if xr_interface:
+		var modes = xr_interface.get_supported_environment_blend_modes()
+		if XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND in modes:
+			xr_interface.environment_blend_mode = XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND
+		elif XRInterface.XR_ENV_BLEND_MODE_ADDITIVE in modes:
+			xr_interface.environment_blend_mode = XRInterface.XR_ENV_BLEND_MODE_ADDITIVE
+		else:
+			return false
+	else:
+		return false
+
+	get_viewport().transparent_bg = true
+	environment.background_mode = Environment.BG_CLEAR_COLOR
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	return true
+
+func switch_to_vr() -> bool:
+	if xr_interface:
+		var modes = xr_interface.get_supported_environment_blend_modes()
+		if XRInterface.XR_ENV_BLEND_MODE_OPAQUE in modes:
+			xr_interface.environment_blend_mode = XRInterface.XR_ENV_BLEND_MODE_OPAQUE
+		else:
+			return false
+	else:
+		return false
+	
+	get_viewport().transparent_bg = false
+	environment.background_mode = Environment.BG_SKY
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_BG
+	return true

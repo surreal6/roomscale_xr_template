@@ -281,6 +281,6 @@ text = "Button 3"
 [connection signal="pressed" from="Player/PlayerVBox/Buttons/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Player/PlayerVBox/Buttons/Reset" to="." method="_on_Reset_pressed"]
 [connection signal="item_selected" from="Options/OptionsVBox/PlayAreaMode/PlayAreaModeSelector" to="." method="_on_play_area_mode_item_selected"]
-[connection signal="pressed" from="Options/OptionsVBox/Passthrough/PassthroughCB" to="." method="_on_SnapTurningCB_pressed"]
+[connection signal="toggled" from="Options/OptionsVBox/Passthrough/PassthroughCB" to="." method="_on_passthrough_cb_pressed"]
 [connection signal="pressed" from="Options/OptionsVBox/Buttons/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Options/OptionsVBox/Buttons/Reset" to="." method="_on_Reset_pressed"]
