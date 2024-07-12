@@ -1,22 +1,22 @@
-extends Node3D
-class_name konsole
+extends Node
 
-@export var fixed_labels : Array = []
-
-signal konsole_ready
 signal add_klabel
 
 const konsole_label : PackedScene = preload("res://assets/konsole/konsole_label_3d.tscn")
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	konsole_ready.emit()
+@export var fixed_konsole : Node3D
+@export var float_konsole : Node3D
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	#var fixedLabels = get_tree().get_nodes_in_group("fixed_klabels")
-	#var floatLabels = get_tree().get_nodes_in_group("float_klabels")
-	pass
+func setup_fixed_konsole(camera_node):
+	var look_at_node = Node3D.new()
+	camera_node.add_child(look_at_node)
+	look_at_node.position.z = -2
+	fixed_konsole = look_at_node
+
+func print(msg, fixed = true, delay = 5):
+	print("k$: " , msg)
+	if AGUserSettings.xr_enabled:
+		add_label(msg, fixed, delay)
 
 func move_up_all_children(konsole_parent, v_size = 0.05):
 	for node in konsole_parent.get_children():
@@ -28,15 +28,15 @@ func add_label(msg, fixed, delay):
 	kLabel.fixed = fixed
 	kLabel.delay = delay
 	if fixed :
-		move_up_all_children($"../XRCamera3D/look_at")
+		move_up_all_children(fixed_konsole)
 		kLabel.add_to_group("fixed_klabels")
-		$"../XRCamera3D/look_at".add_child(kLabel)
+		fixed_konsole.add_child(kLabel)
 		add_klabel.emit(msg, false, 10)
 	else:
 		kLabel.add_to_group("float_klabels")
-		move_up_all_children($konsole_float)
-		$konsole_float.add_child(kLabel)
-	kLabel.global_position = $"../XRCamera3D/look_at".global_position
+		move_up_all_children(float_konsole)
+		float_konsole.add_child(kLabel)
+	kLabel.global_position = fixed_konsole.global_position
 	if !fixed:
 		kLabel.global_position.y = 1
 
@@ -45,4 +45,3 @@ func add_label(msg, fixed, delay):
 func on_label_autodestroy(kLabel):
 	kLabel.disconnect("autodestroy_label", on_label_autodestroy)
 	kLabel.queue_free()
-	

@@ -7,7 +7,8 @@ signal player_height_changed(new_height)
 @onready var y_deadzone_slider = $Input/InputVBox/yAxisDeadZone/yAxisDeadZoneSlider
 @onready var x_deadzone_slider = $Input/InputVBox/xAxisDeadZone/xAxisDeadZoneSlider
 @onready var player_height_slider = $Player/PlayerVBox/PlayerHeight/PlayerHeightSlider
-@onready var play_area_mode_button = $Options/OptionsVBox/Options/PlayAreaMode
+@onready var play_area_mode_button = $Options/OptionsVBox/PlayAreaMode/PlayAreaModeSelector
+@onready var passthrough_button = $Options/OptionsVBox/Passthrough/PassthroughCB
 
 func _update():
 	# Input
@@ -21,6 +22,7 @@ func _update():
 
 	#Options
 	play_area_mode_button.selected = AGUserSettings.play_area_mode
+	passthrough_button.button_pressed = AGUserSettings.passthrough
 
 
 # Called when the node enters the scene tree for the first time.
@@ -30,6 +32,12 @@ func _ready():
 	else:
 		$Save/Button.disabled = true
 
+func hide_xr_options() -> void:
+	if !AGUserSettings.xr_enabled:
+		set_tab_hidden(0, true)
+		set_tab_hidden(1, true)
+		$Options/OptionsVBox/PlayAreaMode.hide()
+		$Options/OptionsVBox/Passthrough.hide()
 
 func _on_Save_pressed():
 	if AGUserSettings:

@@ -36,7 +36,6 @@ script = ExtResource("2_6lhaj")
 [node name="floor" parent="." instance=ExtResource("2_0f1ca")]
 
 [node name="menuPivot" type="Node3D" parent="."]
-visible = false
 script = ExtResource("3_0jyru")
 
 [node name="menu" parent="menuPivot" instance=ExtResource("3_3ror3")]
@@ -45,7 +44,3 @@ scene = ExtResource("4_3mas0")
 transparent = 0
 unshaded = true
 scene_properties_keys = PackedStringArray("ag_user_settings_ui.gd")
-
-[node name="UserSettingsUI" parent="." instance=ExtResource("4_3mas0")]
-visible = false
-scale = Vector2(2, 2)

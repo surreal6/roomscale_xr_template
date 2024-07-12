@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bj8twuda6rcnf"]
+[gd_scene load_steps=6 format=3 uid="uid://bj8twuda6rcnf"]
 
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="1_7teve"]
+[ext_resource type="Script" path="res://assets/players/player_vr.gd" id="1_a75kp"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="2_3d0tp"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_sux86"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="4_7idwv"]
 
 [node name="XROrigin3DStanding" type="XROrigin3D"]
+script = ExtResource("1_a75kp")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)

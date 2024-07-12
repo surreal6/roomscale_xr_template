@@ -26,7 +26,11 @@ enum PlayAreaMode {
 
 @export_group("Options")
 
+@export var xr_enabled : bool = true
+@export var system_info : Dictionary
+
 @export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
+@export var passthrough : bool = false
 
 ## Settings file name to persist user settings
 var settings_file_name : String = "user://ag_user_settings.json"
@@ -47,7 +51,7 @@ func reset_to_defaults() -> void:
 	player_height = XRTools.get_player_standard_height()
 	haptics_scale = XRToolsRumbleManager.get_default_haptics_scale()
 	play_area_mode = PlayAreaMode.ROOMSCALE
-
+	passthrough = false
 
 ## Set the player height property
 func set_player_height(new_value : float) -> void:
@@ -55,11 +59,11 @@ func set_player_height(new_value : float) -> void:
 
 
 func set_play_area_mode(new_value : PlayAreaMode) -> void:
-	print("AG_USER set play area mode to %s" % new_value)
 	if new_value != play_area_mode:
 		play_area_mode = new_value
 		var enum_value = AGUserSettings.PlayAreaMode.find_key(new_value)
 		print("play area mode set to %s" % enum_value)
+
 
 ## Save the settings to file
 func save() -> void:
@@ -75,7 +79,9 @@ func save() -> void:
 			"height" : player_height
 		},
 		"options" : {
+			"xr_enabled" : xr_enabled,
 			"play_area_mode" : play_area_mode,
+			"passthrough" : passthrough,
 		}
 	}
 
@@ -92,6 +98,7 @@ func save() -> void:
 	file.store_line(settings_text)
 	file.close()
 	get_tree().reload_current_scene()
+
 
 ## Load the settings from file
 func _load() -> void:
@@ -140,8 +147,15 @@ func _load() -> void:
 	# Parse our Options settings
 	if settings.has("options"):
 		var options : Dictionary = settings["options"]
+		# ignore xr_enabled when loading
+		#if options.has("xr_enabled"):
+			#xr_enabled = options["xr_enabled"]
+		#if options.has("system_info"):
+			#system_info = options["system_info"]
 		if options.has("play_area_mode"):
 			play_area_mode = options["play_area_mode"]
+		if options.has("passthrough"):
+			passthrough = options["passthrough"]
 
 
 ## Helper function to remap input vector with deadzone values
