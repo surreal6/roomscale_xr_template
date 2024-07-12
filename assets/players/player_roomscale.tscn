@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://efx4wfle10dw"]
+[gd_scene load_steps=4 format=3 uid="uid://efx4wfle10dw"]
 
 [ext_resource type="Script" path="res://assets/players/player_vr.gd" id="1_kh6k5"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="3_6ugwn"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_n413o"]
+radius = 0.05
+height = 0.1
 
 [node name="XROrigin3DRoomscale" type="XROrigin3D"]
 script = ExtResource("1_kh6k5")
@@ -22,6 +26,9 @@ target_radius = 0.025
 
 [node name="OpenXRFbRenderModel" type="OpenXRFbRenderModel" parent="LeftHand"]
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftHand"]
+mesh = SubResource("SphereMesh_n413o")
+
 [node name="RightHand" type="XRController3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
@@ -35,6 +42,9 @@ target_radius = 0.025
 
 [node name="OpenXRFbRenderModel" type="OpenXRFbRenderModel" parent="RightHand"]
 render_model_type = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightHand"]
+mesh = SubResource("SphereMesh_n413o")
 
 [connection signal="button_pressed" from="LeftHand" to="." method="_on_left_hand_button_pressed"]
 [connection signal="button_pressed" from="RightHand" to="." method="_on_right_hand_button_pressed"]

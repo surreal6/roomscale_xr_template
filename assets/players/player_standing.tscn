@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://bj8twuda6rcnf"]
+[gd_scene load_steps=7 format=3 uid="uid://bj8twuda6rcnf"]
 
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="1_7teve"]
 [ext_resource type="Script" path="res://assets/players/player_vr.gd" id="1_a75kp"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="2_3d0tp"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_sux86"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="4_7idwv"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6826v"]
+radius = 0.05
+height = 0.1
 
 [node name="XROrigin3DStanding" type="XROrigin3D"]
 script = ExtResource("1_a75kp")
@@ -28,6 +32,9 @@ target_radius = 0.025
 
 [node name="OpenXRFbRenderModel" type="OpenXRFbRenderModel" parent="LeftHand"]
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftHand"]
+mesh = SubResource("SphereMesh_6826v")
+
 [node name="RightHand" type="XRController3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
@@ -45,6 +52,9 @@ target_radius = 0.025
 
 [node name="OpenXRFbRenderModel" type="OpenXRFbRenderModel" parent="RightHand"]
 render_model_type = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightHand"]
+mesh = SubResource("SphereMesh_6826v")
 
 [node name="PlayerBody" parent="." instance=ExtResource("3_sux86")]
 

@@ -23,9 +23,11 @@ func _ready():
 
 
 func setup_for_oculus_controller():
+	left_hand.get_node("MeshInstance3D").queue_free()
 	left_hand.pose = "grip"
 	left_hand_pointer.rotation_degrees.x = -50
 	left_hand_pointer.y_offset = 0.02
+	right_hand.get_node("MeshInstance3D").queue_free()
 	right_hand.pose = "grip"
 	right_hand_pointer.rotation_degrees.x = -50
 	right_hand_pointer.y_offset = 0.02
