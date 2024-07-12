@@ -26,7 +26,7 @@ enum PlayAreaMode {
 
 @export_group("Options")
 
-@export var play_area_mode : PlayAreaMode = PlayAreaMode.STANDING: set = set_play_area_mode
+@export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
 
 ## Settings file name to persist user settings
 var settings_file_name : String = "user://ag_user_settings.json"
@@ -46,7 +46,7 @@ func reset_to_defaults() -> void:
 	x_axis_dead_zone = XRTools.get_x_axis_dead_zone()
 	player_height = XRTools.get_player_standard_height()
 	haptics_scale = XRToolsRumbleManager.get_default_haptics_scale()
-	play_area_mode = PlayAreaMode.STANDING
+	play_area_mode = PlayAreaMode.ROOMSCALE
 
 
 ## Set the player height property
