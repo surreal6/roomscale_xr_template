@@ -53,6 +53,10 @@ func _ready():
 		xr_interface.session_stopping.connect(_on_openxr_stopping)
 		xr_interface.pose_recentered.connect(_on_openxr_pose_recentered)
 		
+		xr_interface.play_area_changed.connect(_on_play_area_changed)
+		
+		XRServer.reference_frame_changed.connect(_on_reference_frame_changed)
+		
 		if AGUserSettings.play_area_mode == AGUserSettings.PlayAreaMode.ROOMSCALE:
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE:
@@ -159,6 +163,17 @@ func _on_openxr_pose_recentered() -> void:
 	emit_signal("pose_recentered")
 
 
+func _on_play_area_changed() -> void:
+	DebugKonsole.print("XRInterface: area changed", false)
+	get_play_area()
+
+
+func _on_reference_frame_changed() -> void:
+	#DebugKonsole.print("XRServer: reference_frame_changed", false)
+	print("XRServer: reference_frame_changed")
+	get_play_area()
+	
+	
 func is_ar_available() -> bool:
 	if xr_interface:
 		var modes = xr_interface.get_supported_environment_blend_modes()
