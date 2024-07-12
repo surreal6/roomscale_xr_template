@@ -1,23 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://efx4wfle10dw"]
+[gd_scene load_steps=2 format=3 uid="uid://efx4wfle10dw"]
 
-[ext_resource type="Script" path="res://assets/players/player_vr_pointers.gd" id="1_riifl"]
-[ext_resource type="PackedScene" uid="uid://cl6m21y2uldtf" path="res://assets/pointers/pointer.tscn" id="2_6amss"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="3_6ugwn"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_5gufi"]
-size = Vector3(0.1, 0.1, 0.1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s83fb"]
-albedo_color = Color(1, 1, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_kqpqi"]
-size = Vector3(0.1, 0.1, 0.1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1cqw4"]
-albedo_color = Color(0, 1, 1, 1)
-
 [node name="XROrigin3DRoomscale" type="XROrigin3D"]
-script = ExtResource("1_riifl")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
@@ -25,28 +10,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 [node name="LeftHand" type="XRController3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
 tracker = &"left_hand"
-
-[node name="Test" type="MeshInstance3D" parent="LeftHand"]
-mesh = SubResource("BoxMesh_5gufi")
-surface_material_override/0 = SubResource("StandardMaterial3D_s83fb")
-
-[node name="Pointer" parent="LeftHand" instance=ExtResource("2_6amss")]
-visible = false
+pose = &"grip"
+show_when_tracked = true
 
 [node name="FunctionPointer" parent="LeftHand" instance=ExtResource("3_6ugwn")]
+
+[node name="OpenXRFbRenderModel" type="OpenXRFbRenderModel" parent="LeftHand"]
 
 [node name="RightHand" type="XRController3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
-
-[node name="Test" type="MeshInstance3D" parent="RightHand"]
-mesh = SubResource("BoxMesh_kqpqi")
-skeleton = NodePath("../../LeftHand")
-surface_material_override/0 = SubResource("StandardMaterial3D_1cqw4")
-
-[node name="Pointer" parent="RightHand" instance=ExtResource("2_6amss")]
+pose = &"grip"
+show_when_tracked = true
 
 [node name="FunctionPointer" parent="RightHand" instance=ExtResource("3_6ugwn")]
+
+[node name="OpenXRFbRenderModel" type="OpenXRFbRenderModel" parent="RightHand"]
+render_model_type = 1
 
 [connection signal="button_pressed" from="LeftHand" to="." method="_on_left_hand_button_pressed"]
 [connection signal="button_pressed" from="RightHand" to="." method="_on_right_hand_button_pressed"]
