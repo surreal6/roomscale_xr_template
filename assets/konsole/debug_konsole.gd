@@ -9,9 +9,13 @@ const konsole_label : PackedScene = preload("res://assets/konsole/konsole_label_
 
 func setup_fixed_konsole(camera_node):
 	var look_at_node = Node3D.new()
+	var float_node = Node3D.new()
 	camera_node.add_child(look_at_node)
+	camera_node.add_child(float_node)
 	look_at_node.position.z = -2
+	float_node.position.z = -1.5
 	fixed_konsole = look_at_node
+	float_konsole = float_node
 
 func print(msg, fixed = true, delay = 5):
 	print("k$: " , msg)
