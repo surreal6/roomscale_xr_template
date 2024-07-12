@@ -33,7 +33,6 @@ func on_xr_interface_ready():
 			player = PlayerFlat.instantiate()
 			player.position.y += 2
 			add_child(player)
-			$menuPivot.queue_free()
 			$UserSettingsUI.hide_xr_options()
 			player.connect("toggle_menu", on_toggle_flat_menu)
 

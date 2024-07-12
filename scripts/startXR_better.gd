@@ -21,7 +21,7 @@ var xr_is_focussed = false
 func _ready():
 	# waiting for xr_interface to finish auto initialization
 	# also allow mainStage to connect to ready signal
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(0.1).timeout
 
 	xr_interface = XRServer.find_interface("OpenXR")
 	if xr_interface and xr_interface.is_initialized():
