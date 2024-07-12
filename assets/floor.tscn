@@ -1,17 +1,64 @@
-[gd_scene load_steps=3 format=3 uid="uid://bernhtb8ybkle"]
+[gd_scene load_steps=9 format=3 uid="uid://bernhtb8ybkle"]
+
+[ext_resource type="Material" uid="uid://cst632e8ausge" path="res://assets/materials/yellow_standard_material_3d.tres" id="1_07njh"]
+[ext_resource type="Script" path="res://assets/floor.gd" id="1_nacgo"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_apjtg"]
 size = Vector3(10, 0.2, 10)
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7hvfc"]
+noise_type = 2
+frequency = 0.1
+fractal_type = 0
+cellular_distance_function = 1
+cellular_jitter = 0.0
+cellular_return_type = 6
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0ivhv"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_7hvfc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ne3qa"]
+albedo_color = Color(0.5, 0.5, 0.5, 1)
+albedo_texture = SubResource("NoiseTexture2D_0ivhv")
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_yo2ot"]
 size = Vector3(10, 0.2, 10)
 
-[node name="floor" type="StaticBody3D"]
+[sub_resource type="QuadMesh" id="QuadMesh_ragln"]
+size = Vector2(10, 0.2)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="floor" type="StaticBody3D"]
+script = ExtResource("1_nacgo")
+
+[node name="floorInterior" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 mesh = SubResource("BoxMesh_apjtg")
+surface_material_override/0 = SubResource("StandardMaterial3D_ne3qa")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("BoxShape3D_yo2ot")
+
+[node name="floor_limits" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor_limits"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, 4.9)
+mesh = SubResource("QuadMesh_ragln")
+surface_material_override/0 = ExtResource("1_07njh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="floor_limits"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, -4.9)
+mesh = SubResource("QuadMesh_ragln")
+surface_material_override/0 = ExtResource("1_07njh")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="floor_limits"]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 4.9, 0.01, 0)
+mesh = SubResource("QuadMesh_ragln")
+surface_material_override/0 = ExtResource("1_07njh")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="floor_limits"]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -4.9, 0.01, 0)
+mesh = SubResource("QuadMesh_ragln")
+surface_material_override/0 = ExtResource("1_07njh")

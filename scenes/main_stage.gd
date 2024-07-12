@@ -20,14 +20,12 @@ func on_focus_gained():
 
 
 func on_switch_to_ar():
-	DebugKonsole.print("switch_to_ar")
 	$startXr.switch_to_ar()
-
+	$floor.show_floor = false
 
 func on_switch_to_vr():
-	DebugKonsole.print("switch_to_vr")
 	$startXr.switch_to_vr()
-
+	$floor.show_floor = true
 
 func on_xr_interface_ready():
 	match $startXr.game_mode:
@@ -52,9 +50,9 @@ func on_xr_interface_ready():
 			player.connect("toggle_menu", on_toggle_vr_menu)
 			DebugKonsole.setup_fixed_konsole(player.get_node("XRCamera3D"))
 			if AGUserSettings.system_info["XRRuntimeName"] == "SteamVR/OpenXR":
-				DebugKonsole.print(AGUserSettings.system_info["XRRuntimeName"])
+				DebugKonsole.print(AGUserSettings.system_info["XRRuntimeName"], false)
 			if AGUserSettings.system_info["XRRuntimeName"] == "Oculus":
-				DebugKonsole.print(AGUserSettings.system_info["XRRuntimeName"])
+				DebugKonsole.print(AGUserSettings.system_info["XRRuntimeName"], false)
 				player.setup_for_oculus_controller()
 
 
