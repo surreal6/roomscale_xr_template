@@ -244,13 +244,22 @@ func build_mesh(points):
 
 
 func calculate_boundary_dimensions(points):
-	var minX
-	var minY
-	var maxX
-	var maxY
+	var minX : float = 0.0
+	var minZ : float = 0.0
+	var maxX : float = 0.0
+	var maxZ : float = 0.0
 	if points.size() == 4:
 		for point in points:
-			DebugKonsole.print(str(point.x))
+			print("----", point)
+			print(minX, " ", maxX, " ", minZ, " ", maxZ)
+			if point.x > maxX : maxX = point.x
+			if point.x < minX : minX = point.x
+			if point.z > maxZ : maxZ = point.z
+			if point.z < minZ : minZ = point.z
+	var sizeX = abs(minX) + maxX
+	var sizeZ = abs(minZ) + maxZ
+	DebugKonsole.print("Play area is %s x %s meters" % [snapped(sizeX, 0.01), snapped(sizeZ, 0.01)], false)
+				
 
 func print_to_space(position):
 	var label = Label3D.new()
