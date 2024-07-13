@@ -14,20 +14,26 @@ enum GameMode {
 	FLAT
 }
 
+
+# TODO
+## add this variables as Global Variables
+## as this are not stored in the file as preferences
+@export var xr_enabled : bool = true
+@export var system_info : Dictionary
+@export var menu_active = false
+@export var passthrough_available : bool = true
 @export var game_mode : GameMode = GameMode.ROOMSCALE
 
 @export_group("Options")
 
-@export var xr_enabled : bool = true
-@export var system_info : Dictionary
-
 @export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
 @export var passthrough : bool = false: set = set_passthrough
 
-@export var passthrough_available : bool = true
+
 
 ## Settings file name to persist user settings
 var settings_file_name : String = "user://ag_user_settings.json"
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -41,6 +47,7 @@ func reset_to_defaults() -> void:
 	play_area_mode = PlayAreaMode.ROOMSCALE
 	passthrough = false
 	passthrough_available = true
+	menu_active = false
 
 
 func set_play_area_mode(new_value : PlayAreaMode) -> void:
@@ -118,14 +125,7 @@ func _load() -> void:
 	# Parse our Options settings
 	if settings.has("options"):
 		var options : Dictionary = settings["options"]
-		# ignore xr_enabled when loading
-		#if options.has("xr_enabled"):
-			#xr_enabled = options["xr_enabled"]
-		#if options.has("system_info"):
-			#system_info = options["system_info"]
 		if options.has("play_area_mode"):
 			play_area_mode = options["play_area_mode"]
 		if options.has("passthrough"):
 			passthrough = options["passthrough"]
-		#if options.has("passthrough_available"):
-			#passthrough_available = options["passthrough_available"]

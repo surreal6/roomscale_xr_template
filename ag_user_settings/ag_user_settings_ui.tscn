@@ -215,7 +215,7 @@ theme_override_font_sizes/font_size = 12
 selected = 0
 item_count = 2
 popup/item_0/text = "ROOMSCALE"
-popup/item_1/text = "STATIC"
+popup/item_1/text = "STANDING"
 popup/item_1/id = 1
 
 [node name="Passthrough" type="HBoxContainer" parent="Options/OptionsVBox"]

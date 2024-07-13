@@ -238,7 +238,6 @@ func build_mesh(points):
 		main_stage.add_child(m)
 		for label in labels:
 			m.add_child(label)
-		DebugKonsole.print("build_mesh", false)
 	else:
 		DebugKonsole.print("no points in play area", false)
 

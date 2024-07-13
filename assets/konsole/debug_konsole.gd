@@ -16,8 +16,6 @@ func setup_fixed_konsole(camera_node):
 	float_node.position.z = -1.5
 	fixed_konsole = look_at_node
 	float_konsole = float_node
-	DebugKonsole.print("fixed_konsole y: %s" % camera_node.global_position.y)
-	DebugKonsole.print("float_konsole y: %s" % float_konsole.global_position.y)
 
 func print(msg, fixed = true, delay = 5):
 	print("k$: " , msg)
