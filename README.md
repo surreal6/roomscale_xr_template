@@ -6,6 +6,8 @@ It has a very basic fallback for standing/sitting and also for desktop mode.
 
 Made this for the ​Godot XR Game Jam July 2024​ while learning the basics of roomscale for my next project.
 
+[https://asturnazari.itch.io/roomscale-xr-template](https://asturnazari.itch.io/roomscale-xr-template)
+
 ![Roomscale XR Template](photo_2024-07-13_19-07-18.jpg)
 
 ## Keymap
