@@ -1,8 +1,12 @@
-# XR Template Roomscale
+# Roomscale XR Template
 
 This is a basic template project for a Roomscale game, just for natural movement.
 
 It has a very basic fallback for standing/sitting and also for desktop mode.
+
+Made this for the ​Godot XR Game Jam July 2024​ while learning the basics of roomscale for my next project.
+
+![Roomscale XR Template](photo_2024-07-13_19-07-18.jpg)
 
 ## Keymap
 
@@ -42,11 +46,11 @@ This project demoes the controller FbRenderModel in Quest 2 / Quest 3 and has a 
 
 If you do use print when thinkering and designing, this template also includes a simple debug tool that draws floating labels in the scene, so you can print fixed messages to a floating panel by typing:
 
-    DebugKonsole.print("your message here")
+	DebugKonsole.print("your message here")
 
 or floating messages that dissapear by typing:
 
-    DebugKonsole.print("your message here", false)
+	DebugKonsole.print("your message here", false)
 
 You can just comment all DebugKonsole lines before release :)
 
@@ -67,4 +71,3 @@ Godot XR Toggle  (just use the toggle to test the desktop version)
 ## Known issues
 
 play_area_changed signal in XRInterface is not working
-
