@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dhyam3il8hnph"]
+[gd_scene load_steps=7 format=3 uid="uid://dhyam3il8hnph"]
 
 [ext_resource type="Script" path="res://scenes/main_stage.gd" id="1_ovvm0"]
 [ext_resource type="PackedScene" uid="uid://bernhtb8ybkle" path="res://assets/floor/floor.tscn" id="2_0f1ca"]
 [ext_resource type="Script" path="res://scripts/startXR_better.gd" id="2_6lhaj"]
-[ext_resource type="PackedScene" uid="uid://ytsxet2k47lj" path="res://ag_user_settings/ag_user_settings_ui.tscn" id="4_3mas0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ck16f"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -32,11 +31,3 @@ shadow_enabled = true
 script = ExtResource("2_6lhaj")
 
 [node name="floor" parent="." instance=ExtResource("2_0f1ca")]
-
-[node name="UserSettingsUI" parent="." instance=ExtResource("4_3mas0")]
-visible = false
-scale = Vector2(2, 2)
-
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0

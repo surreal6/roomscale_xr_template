@@ -5,14 +5,7 @@ signal focus_gained
 signal pose_recentered
 signal xr_interface_ready
 
-enum GameMode {
-	ROOMSCALE,
-	STANDING,
-	FLAT
-}
-
 @export var maximum_refresh_rate : int = 90
-@export var game_mode : GameMode = GameMode.ROOMSCALE
 
 @onready var main_stage = $".."
 @onready var environment : Environment = $"../WorldEnvironment".environment
@@ -61,7 +54,7 @@ func _ready():
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
-				game_mode = GameMode.ROOMSCALE
+				AGUserSettings.game_mode = AGUserSettings.GameMode.ROOMSCALE
 			else:
 				print("STAGE play area mode not supported")
 				# TODO
@@ -72,7 +65,7 @@ func _ready():
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING)
-				game_mode = GameMode.STANDING
+				AGUserSettings.game_mode = AGUserSettings.GameMode.STANDING
 			else:
 				print("SITTING play area mode not supported")
 				# TODO
@@ -90,7 +83,7 @@ func _ready():
 	else:
 		# We couldn't start OpenXR.
 		print("OpenXR not instantiated!")
-		game_mode = GameMode.FLAT
+		AGUserSettings.game_mode = AGUserSettings.GameMode.FLAT
 		AGUserSettings.xr_enabled = false
 	
 	xr_interface_ready.emit()

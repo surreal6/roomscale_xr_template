@@ -1,6 +1,7 @@
 extends TabContainer
 
 signal player_height_changed(new_height)
+signal change_play_area_mode
 
 @onready var snap_turning_button = $Input/InputVBox/SnapTurning/SnapTurningCB
 @onready var haptics_scale_slider = $Input/InputVBox/HapticsScale/HapticsScaleSlider
@@ -12,13 +13,13 @@ signal player_height_changed(new_height)
 
 func _update():
 	# Input
-	snap_turning_button.button_pressed = AGUserSettings.snap_turning
-	y_deadzone_slider.value = AGUserSettings.y_axis_dead_zone
-	x_deadzone_slider.value = AGUserSettings.x_axis_dead_zone
-	haptics_scale_slider.value = AGUserSettings.haptics_scale
+	snap_turning_button.button_pressed = XRToolsUserSettings.snap_turning
+	y_deadzone_slider.value = XRToolsUserSettings.y_axis_dead_zone
+	x_deadzone_slider.value = XRToolsUserSettings.x_axis_dead_zone
+	haptics_scale_slider.value = XRToolsUserSettings.haptics_scale
 
 	# Player
-	player_height_slider.value = AGUserSettings.player_height
+	player_height_slider.value = XRToolsUserSettings.player_height
 
 	#Options
 	play_area_mode_button.selected = AGUserSettings.play_area_mode
@@ -29,58 +30,73 @@ func _update():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if AGUserSettings:
+	var webxr_interface = XRServer.find_interface("WebXR")
+	set_tab_hidden(2, webxr_interface == null)
+	set_tab_hidden(0, !AGUserSettings.game_mode == 1)
+	set_tab_hidden(1, !AGUserSettings.game_mode == 1)
+	
+	if !AGUserSettings.xr_enabled:
+		$Options/OptionsVBox/PlayAreaMode.hide()
+		$Options/OptionsVBox/Passthrough.hide()
+
+	if AGUserSettings and XRToolsUserSettings:
 		_update()
 	else:
 		$Save/Button.disabled = true
 
-func hide_xr_options() -> void:
-	if !AGUserSettings.xr_enabled:
-		set_tab_hidden(0, true)
-		set_tab_hidden(1, true)
-		$Options/OptionsVBox/PlayAreaMode.hide()
-		$Options/OptionsVBox/Passthrough.hide()
 
 func _on_Save_pressed():
 	if AGUserSettings:
 		# Save
 		AGUserSettings.save()
 
+	if XRToolsUserSettings:
+		# Save
+		XRToolsUserSettings.save()
+
 
 func _on_Reset_pressed():
 	if AGUserSettings:
 		AGUserSettings.reset_to_defaults()
 		_update()
-		emit_signal("player_height_changed", AGUserSettings.player_height)
+	
+	if XRToolsUserSettings:
+		XRToolsUserSettings.reset_to_defaults()
+		_update()
+		player_height_changed.emit(XRToolsUserSettings.player_height)
 
 
 # Input settings changed
 func _on_SnapTurningCB_pressed():
-	AGUserSettings.snap_turning = snap_turning_button.button_pressed
+	XRToolsUserSettings.snap_turning = snap_turning_button.button_pressed
 
 
 # Player settings changed
 func _on_PlayerHeightSlider_drag_ended(_value_changed):
-	AGUserSettings.player_height = player_height_slider.value
-	emit_signal("player_height_changed", AGUserSettings.player_height)
+	XRToolsUserSettings.player_height = player_height_slider.value
+	player_height_changed.emit(XRToolsUserSettings.player_height)
+
+
+func _on_web_xr_primary_item_selected(index: int) -> void:
+	XRToolsUserSettings.webxr_primary = index
 
 
 func _on_y_axis_dead_zone_slider_value_changed(value):
-	AGUserSettings.y_axis_dead_zone = y_deadzone_slider.value
+	XRToolsUserSettings.y_axis_dead_zone = y_deadzone_slider.value
 
 
 func _on_x_axis_dead_zone_slider_value_changed(value):
-	AGUserSettings.x_axis_dead_zone = x_deadzone_slider.value
+	XRToolsUserSettings.x_axis_dead_zone = x_deadzone_slider.value
 
 
 func _on_haptics_scale_slider_value_changed(value):
-	AGUserSettings.haptics_scale = value
+	XRToolsUserSettings.haptics_scale = value
 
 
 func _on_play_area_mode_item_selected(index: int) -> void:
 	var enum_value = AGUserSettings.PlayAreaMode.find_key(index)
 	AGUserSettings.play_area_mode = AGUserSettings.PlayAreaMode[enum_value]
-
+	get_tree().reload_current_scene()
 
 func _on_passthrough_cb_pressed(value):
 	AGUserSettings.passthrough = value

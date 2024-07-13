@@ -8,24 +8,13 @@ enum PlayAreaMode {
 	STANDING,
 }
 
-@export_group("Input")
+enum GameMode {
+	ROOMSCALE,
+	STANDING,
+	FLAT
+}
 
-## User setting for snap-turn
-@export var snap_turning : bool = true
-
-## User setting for y axis dead zone
-@export var y_axis_dead_zone : float = 0.1
-
-## User setting for y axis dead zone
-@export var x_axis_dead_zone : float = 0.2
-
-## Used to control rumble like volume
-@export_range(0.0, 1.0, 0.05) var haptics_scale := 1.0
-
-@export_group("Player")
-
-## User setting for player height
-@export var player_height : float = 1.85: set = set_player_height
+@export var game_mode : GameMode = GameMode.ROOMSCALE
 
 @export_group("Options")
 
@@ -49,19 +38,9 @@ func _ready():
 ## Reset to default values
 func reset_to_defaults() -> void:
 	# Reset to defaults.
-	# Where applicable we obtain our project settings
-	snap_turning = XRTools.get_default_snap_turning()
-	y_axis_dead_zone = XRTools.get_y_axis_dead_zone()
-	x_axis_dead_zone = XRTools.get_x_axis_dead_zone()
-	player_height = XRTools.get_player_standard_height()
-	haptics_scale = XRToolsRumbleManager.get_default_haptics_scale()
 	play_area_mode = PlayAreaMode.ROOMSCALE
 	passthrough = false
 	passthrough_available = true
-
-## Set the player height property
-func set_player_height(new_value : float) -> void:
-	player_height = clamp(new_value, 1.0, 2.5)
 
 
 func set_play_area_mode(new_value : PlayAreaMode) -> void:
@@ -84,15 +63,6 @@ func set_passthrough(new_value : bool) -> void:
 func save() -> void:
 	# Convert the settings to a dictionary
 	var settings := {
-		"input" : {
-			"default_snap_turning" : snap_turning,
-			"y_axis_dead_zone" : y_axis_dead_zone,
-			"x_axis_dead_zone" : x_axis_dead_zone,
-			"haptics_scale": haptics_scale
-		},
-		"player" : {
-			"height" : player_height
-		},
 		"options" : {
 			"xr_enabled" : xr_enabled,
 			"play_area_mode" : play_area_mode,
@@ -113,7 +83,6 @@ func save() -> void:
 	# Write the settings text to the file
 	file.store_line(settings_text)
 	file.close()
-	get_tree().reload_current_scene()
 
 
 ## Load the settings from file
@@ -145,20 +114,6 @@ func _load() -> void:
 	var settings : Dictionary = settings_raw
 	if settings.has("input"):
 		var input : Dictionary = settings["input"]
-		if input.has("default_snap_turning"):
-			snap_turning = input["default_snap_turning"]
-		if input.has("y_axis_dead_zone"):
-			y_axis_dead_zone = input["y_axis_dead_zone"]
-		if input.has("x_axis_dead_zone"):
-			x_axis_dead_zone = input["x_axis_dead_zone"]
-		if input.has("haptics_scale"):
-			haptics_scale = input["haptics_scale"]
-
-	# Parse our player settings
-	if settings.has("player"):
-		var player : Dictionary = settings["player"]
-		if player.has("height"):
-			player_height = player["height"]
 
 	# Parse our Options settings
 	if settings.has("options"):
@@ -174,21 +129,3 @@ func _load() -> void:
 			passthrough = options["passthrough"]
 		#if options.has("passthrough_available"):
 			#passthrough_available = options["passthrough_available"]
-
-
-## Helper function to remap input vector with deadzone values
-func get_adjusted_vector2(p_controller, p_input_action):
-	var vector = Vector2.ZERO
-	var original_vector = p_controller.get_vector2(p_input_action)
-
-	if abs(original_vector.y) > y_axis_dead_zone:
-		vector.y = remap(abs(original_vector.y), y_axis_dead_zone, 1, 0, 1)
-		if original_vector.y < 0:
-			vector.y *= -1
-
-	if abs(original_vector.x) > x_axis_dead_zone:
-		vector.x = remap(abs(original_vector.x), x_axis_dead_zone, 1, 0, 1)
-		if original_vector.x < 0:
-			vector.x *= -1
-
-	return vector

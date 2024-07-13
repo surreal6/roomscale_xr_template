@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://ag_user_settings/ag_user_settings_ui.gd" id="1_dj8tw"]
 
-[node name="UserSettingsUI" type="TabContainer"]
+[node name="SettingsUI" type="TabContainer"]
 offset_right = 300.0
-offset_bottom = 159.0
+offset_bottom = 211.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 12
 tab_alignment = 1
-current_tab = 2
+current_tab = 3
 script = ExtResource("1_dj8tw")
 
 [node name="Input" type="MarginContainer" parent="."]
@@ -90,7 +90,7 @@ alignment = 1
 [node name="Save" type="Button" parent="Input/InputVBox/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Save"
+text = "Apply"
 
 [node name="Reset" type="Button" parent="Input/InputVBox/Buttons"]
 layout_mode = 2
@@ -135,9 +135,57 @@ alignment = 1
 [node name="Save" type="Button" parent="Player/PlayerVBox/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Save"
+text = "Apply"
 
 [node name="Reset" type="Button" parent="Player/PlayerVBox/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Reset"
+
+[node name="WebXR" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+metadata/_tab_index = 2
+
+[node name="WebXRVBox" type="VBoxContainer" parent="WebXR"]
+layout_mode = 2
+
+[node name="WebXR" type="HBoxContainer" parent="WebXR/WebXRVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WebXR/WebXRVBox/WebXR"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "WebXR primary:"
+
+[node name="WebXRPrimary" type="OptionButton" parent="WebXR/WebXRVBox/WebXR"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+selected = 0
+item_count = 3
+popup/item_0/text = "Auto"
+popup/item_1/text = "Thumbstick"
+popup/item_1/id = 1
+popup/item_2/text = "Trackpad"
+popup/item_2/id = 2
+
+[node name="HSeparator" type="HSeparator" parent="WebXR/WebXRVBox"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="WebXR/WebXRVBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Save" type="Button" parent="WebXR/WebXRVBox/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Apply"
+
+[node name="Reset" type="Button" parent="WebXR/WebXRVBox/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Reset"
@@ -148,7 +196,7 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="OptionsVBox" type="VBoxContainer" parent="Options"]
 layout_mode = 2
@@ -230,7 +278,7 @@ alignment = 1
 [node name="Save" type="Button" parent="Options/OptionsVBox/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Save"
+text = "Apply"
 
 [node name="Reset" type="Button" parent="Options/OptionsVBox/Buttons"]
 layout_mode = 2
@@ -244,7 +292,7 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="OptionsVBox" type="VBoxContainer" parent="Tools"]
 layout_mode = 2
@@ -280,6 +328,7 @@ text = "Button 3"
 [connection signal="drag_ended" from="Player/PlayerVBox/PlayerHeight/PlayerHeightSlider" to="." method="_on_PlayerHeightSlider_drag_ended"]
 [connection signal="pressed" from="Player/PlayerVBox/Buttons/Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Player/PlayerVBox/Buttons/Reset" to="." method="_on_Reset_pressed"]
+[connection signal="item_selected" from="WebXR/WebXRVBox/WebXR/WebXRPrimary" to="." method="_on_web_xr_primary_item_selected"]
 [connection signal="item_selected" from="Options/OptionsVBox/PlayAreaMode/PlayAreaModeSelector" to="." method="_on_play_area_mode_item_selected"]
 [connection signal="toggled" from="Options/OptionsVBox/Passthrough/PassthroughCB" to="." method="_on_passthrough_cb_pressed"]
 [connection signal="pressed" from="Options/OptionsVBox/Buttons/Save" to="." method="_on_Save_pressed"]
