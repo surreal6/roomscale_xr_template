@@ -14,7 +14,6 @@ enum GameMode {
 	FLAT
 }
 
-
 # TODO
 ## add this variables as Global Variables
 ## as this are not stored in the file as preferences
@@ -30,10 +29,8 @@ enum GameMode {
 @export var passthrough : bool = false: set = set_passthrough
 
 
-
 ## Settings file name to persist user settings
-var settings_file_name : String = "user://ag_user_settings.json"
-
+var settings_file_name : String = "user://template_user_settings.json"
 
 
 # Called when the node enters the scene tree for the first time.
@@ -46,14 +43,12 @@ func reset_to_defaults() -> void:
 	# Reset to defaults.
 	play_area_mode = PlayAreaMode.ROOMSCALE
 	passthrough = false
-	passthrough_available = true
-	menu_active = false
 
 
 func set_play_area_mode(new_value : PlayAreaMode) -> void:
 	if new_value != play_area_mode:
 		play_area_mode = new_value
-		var enum_value = AGUserSettings.PlayAreaMode.find_key(new_value)
+		var enum_value = TemplateUserSettings.PlayAreaMode.find_key(new_value)
 		print("play area mode set to %s" % enum_value)
 
 

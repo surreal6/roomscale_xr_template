@@ -22,9 +22,9 @@ func _update():
 	player_height_slider.value = XRToolsUserSettings.player_height
 
 	#Options
-	play_area_mode_button.selected = AGUserSettings.play_area_mode
-	passthrough_button.button_pressed = AGUserSettings.passthrough
-	if !AGUserSettings.passthrough_available:
+	play_area_mode_button.selected = TemplateUserSettings.play_area_mode
+	passthrough_button.button_pressed = TemplateUserSettings.passthrough
+	if !TemplateUserSettings.passthrough_available:
 		$Options/OptionsVBox/Passthrough.hide()
 
 
@@ -32,23 +32,23 @@ func _update():
 func _ready():
 	var webxr_interface = XRServer.find_interface("WebXR")
 	set_tab_hidden(2, webxr_interface == null)
-	set_tab_hidden(0, !AGUserSettings.game_mode == 1)
-	set_tab_hidden(1, !AGUserSettings.game_mode == 1)
+	set_tab_hidden(0, !TemplateUserSettings.game_mode == 1)
+	set_tab_hidden(1, !TemplateUserSettings.game_mode == 1)
 	
-	if !AGUserSettings.xr_enabled:
+	if !TemplateUserSettings.xr_enabled:
 		$Options/OptionsVBox/PlayAreaMode.hide()
 		$Options/OptionsVBox/Passthrough.hide()
 
-	if AGUserSettings and XRToolsUserSettings:
+	if TemplateUserSettings and XRToolsUserSettings:
 		_update()
 	else:
 		$Save/Button.disabled = true
 
 
 func _on_Save_pressed():
-	if AGUserSettings:
+	if TemplateUserSettings:
 		# Save
-		AGUserSettings.save()
+		TemplateUserSettings.save()
 
 	if XRToolsUserSettings:
 		# Save
@@ -56,8 +56,8 @@ func _on_Save_pressed():
 
 
 func _on_Reset_pressed():
-	if AGUserSettings:
-		AGUserSettings.reset_to_defaults()
+	if TemplateUserSettings:
+		TemplateUserSettings.reset_to_defaults()
 		_update()
 	
 	if XRToolsUserSettings:
@@ -94,9 +94,9 @@ func _on_haptics_scale_slider_value_changed(value):
 
 
 func _on_play_area_mode_item_selected(index: int) -> void:
-	var enum_value = AGUserSettings.PlayAreaMode.find_key(index)
-	AGUserSettings.play_area_mode = AGUserSettings.PlayAreaMode[enum_value]
+	var enum_value = TemplateUserSettings.PlayAreaMode.find_key(index)
+	TemplateUserSettings.play_area_mode = TemplateUserSettings.PlayAreaMode[enum_value]
 	get_tree().reload_current_scene()
 
 func _on_passthrough_cb_pressed(value):
-	AGUserSettings.passthrough = value
+	TemplateUserSettings.passthrough = value

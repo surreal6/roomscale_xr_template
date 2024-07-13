@@ -50,22 +50,22 @@ func _ready():
 		
 		XRServer.reference_frame_changed.connect(_on_reference_frame_changed)
 		
-		if AGUserSettings.play_area_mode == AGUserSettings.PlayAreaMode.ROOMSCALE:
+		if TemplateUserSettings.play_area_mode == TemplateUserSettings.PlayAreaMode.ROOMSCALE:
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
-				AGUserSettings.game_mode = AGUserSettings.GameMode.ROOMSCALE
+				TemplateUserSettings.game_mode = TemplateUserSettings.GameMode.ROOMSCALE
 			else:
 				print("STAGE play area mode not supported")
 				# TODO
 				## change play area preferences and reload
 				get_tree().quit()
 		
-		if AGUserSettings.play_area_mode == AGUserSettings.PlayAreaMode.STANDING:
+		if TemplateUserSettings.play_area_mode == TemplateUserSettings.PlayAreaMode.STANDING:
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING)
-				AGUserSettings.game_mode = AGUserSettings.GameMode.STANDING
+				TemplateUserSettings.game_mode = TemplateUserSettings.GameMode.STANDING
 			else:
 				print("SITTING play area mode not supported")
 				# TODO
@@ -74,17 +74,17 @@ func _ready():
 		
 		# check which play area mode is setup
 		print("XR_Interface play area mode: %s" % xr_interface.xr_play_area_mode)
-		var enum_value = AGUserSettings.PlayAreaMode.find_key(AGUserSettings.play_area_mode)
-		print("AGUserSettings: play area mode set to %s" % enum_value)
+		var enum_value = TemplateUserSettings.PlayAreaMode.find_key(TemplateUserSettings.play_area_mode)
+		print("TemplateUserSettings: play area mode set to %s" % enum_value)
 		
-		AGUserSettings.xr_enabled = true
-		AGUserSettings.system_info = xr_interface.get_system_info()
-		AGUserSettings.passthrough_available = is_ar_available()
+		TemplateUserSettings.xr_enabled = true
+		TemplateUserSettings.system_info = xr_interface.get_system_info()
+		TemplateUserSettings.passthrough_available = is_ar_available()
 	else:
 		# We couldn't start OpenXR.
 		print("OpenXR not instantiated!")
-		AGUserSettings.game_mode = AGUserSettings.GameMode.FLAT
-		AGUserSettings.xr_enabled = false
+		TemplateUserSettings.game_mode = TemplateUserSettings.GameMode.FLAT
+		TemplateUserSettings.xr_enabled = false
 	
 	xr_interface_ready.emit()
 
@@ -238,8 +238,19 @@ func build_mesh(points):
 		main_stage.add_child(m)
 		for label in labels:
 			m.add_child(label)
+		calculate_boundary_dimensions(points)
 	else:
 		DebugKonsole.print("no points in play area", false)
+
+
+func calculate_boundary_dimensions(points):
+	var minX
+	var minY
+	var maxX
+	var maxY
+	if points.size() == 4:
+		for point in points:
+			DebugKonsole.print(str(point.x))
 
 func print_to_space(position):
 	var label = Label3D.new()

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ytsxet2k47lj"]
 
-[ext_resource type="Script" path="res://ag_user_settings/ag_user_settings_ui.gd" id="1_dj8tw"]
+[ext_resource type="Script" path="res://template_user_settings/template_user_settings_ui.gd" id="1_dj8tw"]
 
 [node name="SettingsUI" type="TabContainer"]
 offset_right = 300.0

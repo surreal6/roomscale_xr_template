@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dxn5w5utogclj"]
 
-[ext_resource type="Script" path="res://ag_user_settings/menu_xr.gd" id="1_ksq37"]
+[ext_resource type="Script" path="res://template_user_settings/menu_xr.gd" id="1_ksq37"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="2_xu28s"]
-[ext_resource type="PackedScene" uid="uid://ytsxet2k47lj" path="res://ag_user_settings/ag_user_settings_ui.tscn" id="3_82gji"]
+[ext_resource type="PackedScene" uid="uid://ytsxet2k47lj" path="res://template_user_settings/template_user_settings_ui.tscn" id="3_82gji"]
 
 [node name="menuXR" type="Node3D"]
 script = ExtResource("1_ksq37")
@@ -12,4 +12,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
 scene = ExtResource("3_82gji")
 transparent = 0
 unshaded = true
-scene_properties_keys = PackedStringArray("ag_user_settings_ui.gd")
+scene_properties_keys = PackedStringArray("template_user_settings_ui.gd")

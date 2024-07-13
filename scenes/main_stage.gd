@@ -3,8 +3,8 @@ extends Node3D
 const PlayerRoomScale = preload("res://assets/players/player_roomscale.tscn")
 const PlayerStanding = preload("res://assets/players/player_standing.tscn")
 const PlayerFlat = preload("res://assets/players/player_flat.tscn")
-const MenuXR = preload("res://ag_user_settings/menu_xr.tscn")
-const MenuFlat = preload("res://ag_user_settings/ag_user_settings_ui.tscn")
+const MenuXR = preload("res://template_user_settings/menu_xr.tscn")
+const MenuFlat = preload("res://template_user_settings/template_user_settings_ui.tscn")
 
 var player : Node3D
 var menu_instance : Node
@@ -14,8 +14,8 @@ var menu_instance : Node
 func _ready():
 	$startXr.connect("focus_gained", on_focus_gained)
 	$startXr.connect("xr_interface_ready", on_xr_interface_ready)
-	AGUserSettings.connect("switch_to_ar", on_switch_to_ar)
-	AGUserSettings.connect("switch_to_vr", on_switch_to_vr)
+	TemplateUserSettings.connect("switch_to_ar", on_switch_to_ar)
+	TemplateUserSettings.connect("switch_to_vr", on_switch_to_vr)
 
 #
 #func _process(delta):
@@ -41,7 +41,7 @@ func on_switch_to_vr():
 
 
 func on_xr_interface_ready():
-	match AGUserSettings.game_mode:
+	match TemplateUserSettings.game_mode:
 		0: 
 			player = PlayerRoomScale.instantiate()
 			add_child(player)
@@ -55,26 +55,26 @@ func on_xr_interface_ready():
 			add_child(player)
 			player.connect("toggle_menu", on_toggle_flat_menu)
 
-	match AGUserSettings.game_mode:
+	match TemplateUserSettings.game_mode:
 		0, 1:
 			player.connect("toggle_menu", on_toggle_vr_menu)
 			DebugKonsole.setup_fixed_konsole(player.get_node("XRCamera3D"))
 
 			# runtime specific
-			if AGUserSettings.system_info["XRRuntimeName"] == "SteamVR/OpenXR":
-				print(AGUserSettings.system_info["XRRuntimeName"], false)
-			elif AGUserSettings.system_info["XRRuntimeName"] == "Oculus":
-				print(AGUserSettings.system_info["XRRuntimeName"], false)
+			if TemplateUserSettings.system_info["XRRuntimeName"] == "SteamVR/OpenXR":
+				print(TemplateUserSettings.system_info["XRRuntimeName"], false)
+			elif TemplateUserSettings.system_info["XRRuntimeName"] == "Oculus":
+				print(TemplateUserSettings.system_info["XRRuntimeName"], false)
 				player.setup_for_oculus_controller()
 			else:
-				DebugKonsole.print(AGUserSettings.system_info["XRRuntimeName"], false)
+				DebugKonsole.print(TemplateUserSettings.system_info["XRRuntimeName"], false)
 
 			#show play area mode
-			var enum_value = AGUserSettings.PlayAreaMode.find_key(AGUserSettings.play_area_mode)
+			var enum_value = TemplateUserSettings.PlayAreaMode.find_key(TemplateUserSettings.play_area_mode)
 			DebugKonsole.print("Play area mode set to %s" % enum_value, false)
 
 			# restore menu if changing play area mode
-			if AGUserSettings.menu_active:
+			if TemplateUserSettings.menu_active:
 				show_vr_menu()
 			
 
@@ -94,26 +94,26 @@ func hide_vr_menu():
 
 
 func on_toggle_vr_menu():
-	if AGUserSettings.menu_active:
-		AGUserSettings.menu_active = false
+	if TemplateUserSettings.menu_active:
+		TemplateUserSettings.menu_active = false
 		hide_vr_menu()
 	else:
-		AGUserSettings.menu_active = true
+		TemplateUserSettings.menu_active = true
 		show_vr_menu()
 
 
 func on_toggle_flat_menu():
-	if AGUserSettings.menu_active:
-		AGUserSettings.menu_active = false
+	if TemplateUserSettings.menu_active:
+		TemplateUserSettings.menu_active = false
 		menu_instance.queue_free()
 	else:
-		AGUserSettings.menu_active = true
+		TemplateUserSettings.menu_active = true
 		menu_instance = MenuFlat.instantiate()
 		add_child(menu_instance)	
 
 
 func _on_settings_ui_player_height_changed(new_height):
 	DebugKonsole.print("player height changed %s" % new_height, false)
-	match AGUserSettings.game_mode:
+	match TemplateUserSettings.game_mode:
 		1:
 			player.get_node("PlayerBody").calibrate_player_height()
