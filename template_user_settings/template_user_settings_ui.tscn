@@ -229,45 +229,6 @@ text = "Passthrough:"
 [node name="PassthroughCB" type="CheckBox" parent="Options/OptionsVBox/Passthrough"]
 layout_mode = 2
 
-[node name="ShowCage" type="HBoxContainer" parent="Options/OptionsVBox"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Options/OptionsVBox/ShowCage"]
-modulate = Color(0.5, 0.5, 0.5, 1)
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Show Cage:"
-
-[node name="ShowCageCB" type="CheckBox" parent="Options/OptionsVBox/ShowCage"]
-layout_mode = 2
-disabled = true
-
-[node name="ShowEmitters" type="HBoxContainer" parent="Options/OptionsVBox"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Options/OptionsVBox/ShowEmitters"]
-modulate = Color(0.5, 0.5, 0.5, 1)
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Show Emitters:"
-
-[node name="ShowEmittersCB" type="CheckBox" parent="Options/OptionsVBox/ShowEmitters"]
-layout_mode = 2
-disabled = true
-
-[node name="ShowEmitterColor" type="HBoxContainer" parent="Options/OptionsVBox"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Options/OptionsVBox/ShowEmitterColor"]
-modulate = Color(0.5, 0.5, 0.5, 1)
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Show Emitter Color:"
-
-[node name="ShowEmitterColorCB" type="CheckBox" parent="Options/OptionsVBox/ShowEmitterColor"]
-layout_mode = 2
-disabled = true
-
 [node name="HSeparator" type="HSeparator" parent="Options/OptionsVBox"]
 layout_mode = 2
 
