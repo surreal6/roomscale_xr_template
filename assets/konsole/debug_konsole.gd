@@ -19,7 +19,7 @@ func setup_fixed_konsole(camera_node):
 
 func print(msg, fixed = true, delay = 5):
 	print("k$: " , msg)
-	if TemplateUserSettings.xr_enabled and fixed_konsole and float_konsole:
+	if TemplateGlobals.xr_enabled and fixed_konsole and float_konsole:
 		add_label(msg, fixed, delay)
 
 func move_up_all_children(konsole_parent, v_size = 0.05):

@@ -41,7 +41,7 @@ func on_switch_to_vr():
 
 
 func on_xr_interface_ready():
-	match TemplateUserSettings.game_mode:
+	match TemplateGlobals.game_mode:
 		0: 
 			player = PlayerRoomScale.instantiate()
 			add_child(player)
@@ -55,26 +55,26 @@ func on_xr_interface_ready():
 			add_child(player)
 			player.connect("toggle_menu", on_toggle_flat_menu)
 
-	match TemplateUserSettings.game_mode:
+	match TemplateGlobals.game_mode:
 		0, 1:
 			player.connect("toggle_menu", on_toggle_vr_menu)
 			DebugKonsole.setup_fixed_konsole(player.get_node("XRCamera3D"))
 
 			# runtime specific
-			if TemplateUserSettings.system_info["XRRuntimeName"] == "SteamVR/OpenXR":
-				print(TemplateUserSettings.system_info["XRRuntimeName"], false)
-			elif TemplateUserSettings.system_info["XRRuntimeName"] == "Oculus":
-				print(TemplateUserSettings.system_info["XRRuntimeName"], false)
+			if TemplateGlobals.system_info["XRRuntimeName"] == "SteamVR/OpenXR":
+				print(TemplateGlobals.system_info["XRRuntimeName"], false)
+			elif TemplateGlobals.system_info["XRRuntimeName"] == "Oculus":
+				print(TemplateGlobals.system_info["XRRuntimeName"], false)
 				player.setup_for_oculus_controller()
 			else:
-				DebugKonsole.print(TemplateUserSettings.system_info["XRRuntimeName"], false)
+				DebugKonsole.print(TemplateGlobals.system_info["XRRuntimeName"], false)
 
 			#show play area mode
 			var enum_value = TemplateUserSettings.PlayAreaMode.find_key(TemplateUserSettings.play_area_mode)
 			DebugKonsole.print("Play area mode set to %s" % enum_value, false)
 
 			# restore menu if changing play area mode
-			if TemplateUserSettings.menu_active:
+			if TemplateGlobals.menu_active:
 				show_vr_menu()
 			
 
@@ -94,26 +94,26 @@ func hide_vr_menu():
 
 
 func on_toggle_vr_menu():
-	if TemplateUserSettings.menu_active:
-		TemplateUserSettings.menu_active = false
+	if TemplateGlobals.menu_active:
+		TemplateGlobals.menu_active = false
 		hide_vr_menu()
 	else:
-		TemplateUserSettings.menu_active = true
+		TemplateGlobals.menu_active = true
 		show_vr_menu()
 
 
 func on_toggle_flat_menu():
-	if TemplateUserSettings.menu_active:
-		TemplateUserSettings.menu_active = false
+	if TemplateGlobals.menu_active:
+		TemplateGlobals.menu_active = false
 		menu_instance.queue_free()
 	else:
-		TemplateUserSettings.menu_active = true
+		TemplateGlobals.menu_active = true
 		menu_instance = MenuFlat.instantiate()
 		add_child(menu_instance)	
 
 
 func _on_settings_ui_player_height_changed(new_height):
 	DebugKonsole.print("player height changed %s" % new_height, false)
-	match TemplateUserSettings.game_mode:
+	match TemplateGlobals.game_mode:
 		1:
 			player.get_node("PlayerBody").calibrate_player_height()

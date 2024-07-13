@@ -8,21 +8,6 @@ enum PlayAreaMode {
 	STANDING,
 }
 
-enum GameMode {
-	ROOMSCALE,
-	STANDING,
-	FLAT
-}
-
-# TODO
-## add this variables as Global Variables
-## as this are not stored in the file as preferences
-@export var xr_enabled : bool = true
-@export var system_info : Dictionary
-@export var menu_active = false
-@export var passthrough_available : bool = true
-@export var game_mode : GameMode = GameMode.ROOMSCALE
-
 @export_group("Options")
 
 @export var play_area_mode : PlayAreaMode = PlayAreaMode.ROOMSCALE: set = set_play_area_mode
@@ -66,10 +51,8 @@ func save() -> void:
 	# Convert the settings to a dictionary
 	var settings := {
 		"options" : {
-			"xr_enabled" : xr_enabled,
 			"play_area_mode" : play_area_mode,
 			"passthrough" : passthrough,
-			"passthrough_available" : passthrough_available,
 		}
 	}
 

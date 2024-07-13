@@ -24,7 +24,7 @@ func _update():
 	#Options
 	play_area_mode_button.selected = TemplateUserSettings.play_area_mode
 	passthrough_button.button_pressed = TemplateUserSettings.passthrough
-	if !TemplateUserSettings.passthrough_available:
+	if !TemplateGlobals.passthrough_available:
 		$Options/OptionsVBox/Passthrough.hide()
 
 
@@ -32,10 +32,10 @@ func _update():
 func _ready():
 	var webxr_interface = XRServer.find_interface("WebXR")
 	set_tab_hidden(2, webxr_interface == null)
-	set_tab_hidden(0, !TemplateUserSettings.game_mode == 1)
-	set_tab_hidden(1, !TemplateUserSettings.game_mode == 1)
+	set_tab_hidden(0, !TemplateGlobals.game_mode == 1)
+	set_tab_hidden(1, !TemplateGlobals.game_mode == 1)
 	
-	if !TemplateUserSettings.xr_enabled:
+	if !TemplateGlobals.xr_enabled:
 		$Options/OptionsVBox/PlayAreaMode.hide()
 		$Options/OptionsVBox/Passthrough.hide()
 

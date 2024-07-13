@@ -54,7 +54,7 @@ func _ready():
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_STAGE)
-				TemplateUserSettings.game_mode = TemplateUserSettings.GameMode.ROOMSCALE
+				TemplateGlobals.game_mode = TemplateGlobals.GameMode.ROOMSCALE
 			else:
 				print("STAGE play area mode not supported")
 				# TODO
@@ -65,7 +65,7 @@ func _ready():
 			if xr_interface.supports_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING):
 				if xr_interface.xr_play_area_mode != XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING:
 					xr_interface.set_play_area_mode(XRInterface.PlayAreaMode.XR_PLAY_AREA_SITTING)
-				TemplateUserSettings.game_mode = TemplateUserSettings.GameMode.STANDING
+				TemplateGlobals.game_mode = TemplateGlobals.GameMode.STANDING
 			else:
 				print("SITTING play area mode not supported")
 				# TODO
@@ -77,14 +77,14 @@ func _ready():
 		var enum_value = TemplateUserSettings.PlayAreaMode.find_key(TemplateUserSettings.play_area_mode)
 		print("TemplateUserSettings: play area mode set to %s" % enum_value)
 		
-		TemplateUserSettings.xr_enabled = true
-		TemplateUserSettings.system_info = xr_interface.get_system_info()
-		TemplateUserSettings.passthrough_available = is_ar_available()
+		TemplateGlobals.xr_enabled = true
+		TemplateGlobals.system_info = xr_interface.get_system_info()
+		TemplateGlobals.passthrough_available = is_ar_available()
 	else:
 		# We couldn't start OpenXR.
 		print("OpenXR not instantiated!")
-		TemplateUserSettings.game_mode = TemplateUserSettings.GameMode.FLAT
-		TemplateUserSettings.xr_enabled = false
+		TemplateGlobals.game_mode = TemplateGlobals.GameMode.FLAT
+		TemplateGlobals.xr_enabled = false
 	
 	xr_interface_ready.emit()
 
