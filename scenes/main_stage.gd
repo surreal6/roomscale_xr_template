@@ -77,6 +77,10 @@ func on_xr_interface_ready():
 			if TemplateGlobals.menu_active:
 				show_vr_menu()
 			
+			if TemplateGlobals.first_reference_frame_setup:
+				TemplateGlobals.first_reference_frame_setup = false
+				$startXr.get_play_area()
+			
 
 func show_vr_menu():
 	var camera = player.get_node("XRCamera3D")

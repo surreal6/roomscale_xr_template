@@ -241,7 +241,7 @@ func build_mesh(points):
 		calculate_boundary_dimensions(points)
 	else:
 		DebugKonsole.print("no points in play area", false)
-
+		TemplateGlobals.play_area_size = Vector2.ZERO
 
 func calculate_boundary_dimensions(points):
 	var minX : float = 0.0
@@ -250,14 +250,13 @@ func calculate_boundary_dimensions(points):
 	var maxZ : float = 0.0
 	if points.size() == 4:
 		for point in points:
-			print("----", point)
-			print(minX, " ", maxX, " ", minZ, " ", maxZ)
 			if point.x > maxX : maxX = point.x
 			if point.x < minX : minX = point.x
 			if point.z > maxZ : maxZ = point.z
 			if point.z < minZ : minZ = point.z
 	var sizeX = abs(minX) + maxX
 	var sizeZ = abs(minZ) + maxZ
+	TemplateGlobals.play_area_size = Vector2(snapped(sizeX, 0.001), snapped(sizeZ, 0.001))
 	DebugKonsole.print("Play area is %s x %s meters" % [snapped(sizeX, 0.01), snapped(sizeZ, 0.01)], false)
 				
 
