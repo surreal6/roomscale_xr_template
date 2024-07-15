@@ -73,3 +73,5 @@ Godot XR Toggle  (just use the toggle to test the desktop version)
 ## Known issues
 
 play_area_changed signal in XRInterface is not working
+
+When using the pcvr version with SteamVR the play area in Roomscale mode is not aligned with the real boundary, Not sure why it happens, when running in the editor is ok. Maybe an export problem
